@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dinesh Pathakoti | Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="main-header">
+    <a href="#" onclick="showSection('home')" style="text-decoration: none;">
+        <div style="height: 60px; width: 140px; overflow: hidden; border-radius: 5px;">
+          <img src="/Users/dineshpathakoti/Downloads/dplogo.jpg" alt="DP Logo" style="height: 100px; margin-top: -20px; margin-left: -10px; cursor: pointer;" />
+        </div>
+      </a>
+      
+      
+    <nav>
+      <a href="#" onclick="showSection('home')">Home</a>
+      <a href="#" onclick="showSection('experience')">Experience</a>
+      <a href="#" onclick="showSection('projects')">Projects</a>
+      <a href="#" onclick="showSection('skills')">Skills</a>
+      <a href="#" onclick="showSection('about')">About</a>
+      <a href="https://www.linkedin.com/in/dinesh-kumar-pathakoti-3469901a3/" target="_blank"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn"></a>
+      <a href="https://github.com/DINESH200029" target="_blank"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/733/733553.png" alt="GitHub"></a>
+      <button id="toggleMode" title="Toggle dark mode" style="padding: 0.5rem 1rem; font-size: 1rem; background: #eeeeee; border: none; border-radius: 20px; cursor: pointer; font-weight: 500;">
+        Dark Mode: Off
+      </button>
+    </nav>
+  </header>
+
+  <section id="home" class="hero section" style="height: calc(100vh - 40px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; overflow: hidden;">
+    <h1 style="margin-bottom: 1.5rem; font-size: 2.75rem;; font-family: 'Playfair Display', serif; letter-spacing: 1px; ">Hi there, I’m <span style="color: #0071e3;">Dinesh Kumar Pathakoti</span> 👋</h1>
+    <p style="font-size: 1.75rem; max-width: 600px; line-height: 1.8; margin: 0 auto;; font-family: 'Outfit', sans-serif; font-weight: 300; letter-spacing: 0.5px;; color: var(--text-color);">
+      <span style="font-weight: 600;">Data Engineer</span> passionate about Data, ETL Systems, Cloud Architecture, and Scalable Pipelines.<br />
+      Previously contributed in <span style="font-weight: 600;">💸 TCS</span>, <span style="font-weight: 600;">🎓 Cal State East Bay</span>, and <span style="font-weight: 600;">🧠 ML Research Projects</span>.
+    </p>
+    <div style="margin-top: 2.5rem; display: flex; gap: 1.5rem; justify-content: center; align-items: center;">
+      <a href="#experience" style="text-decoration: none;">
+        <button style="padding: 0.75rem 1.5rem; font-size: 1rem; background-color: #0071e3; color: white; border: none; border-radius: 5px; cursor: pointer;">
+          My Work →
+        </button>
+      </a>
+      <a href="https://www.linkedin.com/in/dinesh-kumar-pathakoti-3469901a3/" target="_blank" style="text-decoration: none;">
+        <button style="padding: 0.75rem 1.5rem; font-size: 1rem; background-color: #1a1a1a; color: white; border: none; border-radius: 5px; cursor: pointer;">
+          Let's Connect →
+        </button>
+      </a>
+    </div>
+  </section>
+
+
+  
+  
+  
+  
+  
+
+  <section id="experience" class="section">
+    <h2>Experience 💼</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between;">
+        <div style="flex: 1; min-width: 320px; max-width: 48%;">
+          <div style="border-radius: 16px; overflow: hidden; height: 220px;">
+            <img src="/Users/dineshpathakoti/Downloads/csueblogo.jpg" alt="Cal State East Bay" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">
+          </div>
+          <h3 style="margin-top: 1rem; font-weight: 700;">Graduate Assistant</h3>
+          <p style="margin: 0.25rem 0; color: #666; font-size: 0.95rem; font-weight: bold; ">California State University, East Bay · Feb 2024 – Present</p>
+          <p style="margin-top: 0.5rem;">Built interactive dashboards for staffing, budgeting, and space utilization using Tableau. Ensured 100% data accuracy by integrating validated spreadsheet data and improved reporting time by 20%.</p>
+        </div>
+  
+      <div style="flex: 1; min-width: 320px; max-width: 48%;">
+        <div style="border-radius: 16px; overflow: hidden; height: 220px;">
+          <img src="/Users/dineshpathakoti/Downloads/tcslogo.jpg" alt="TCS" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">
+        </div>
+        <h3 style="margin-top: 1rem; font-weight: 700;">Data Engineer</h3>
+        <p style="margin: 0.25rem 0; color: #666; font-size: 0.95rem; font-weight: bold; ">Tata Consultancy Services · Dec 2021 – Aug 2023</p>
+        <p style="margin-top: 0.5rem;">Engineered scalable data pipelines for Citi Bank using Ab Initio and Teradata. Led server migration projects, optimized query performance, and automated workflows using Autosys and Unix scripting.</p>
+      </div>
+
+      <div style="flex: 1; min-width: 320px; max-width: 48%;">
+        <div style="border-radius: 16px; overflow: hidden; height: 220px;">
+          <img src="/Users/dineshpathakoti/Downloads/tcslogo.jpg" alt="TCS" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">
+        </div>
+        <h3 style="margin-top: 1rem; font-weight: 700;">Data Engineer Trainee</h3>
+        <p style="margin: 0.25rem 0; color: #666; font-size: 0.95rem; font-weight: bold; ">Tata Consultancy Services · Aug 2021 – Nov 2023</p>
+        <p style="margin-top: 0.5rem;">Contributed to high-quality ETL delivery by testing Ab Initio graphs in SIT/UAT and resolving incidents through ServiceNow, enhancing code management and support workflows.</p>
+      </div>
+
+      <div style="flex: 1; min-width: 320px; max-width: 48%;">
+        <div style="border-radius: 16px; overflow: hidden; height: 220px;">
+          <img src="/Users/dineshpathakoti/Downloads/cantileverlogo.jpg" alt="TCS" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">
+        </div>
+        <h3 style="margin-top: 1rem; font-weight: 700;">Software Engineer Intern</h3>
+        <p style="margin: 0.25rem 0; color: #666; font-size: 0.95rem; font-weight: bold; ">Cantilever Labs · Feb 2020 – Apr 2020</p>
+        <p style="margin-top: 0.5rem;">Developed a doctor appointment scheduling system with user-friendly portals, reducing wait times and enabling seamless appointment booking and management for both doctors and patients.</p>
+      </div>
+  
+    </div>
+  </section>
+
+  <section id="projects" class="section" style="display:none;">
+    <h2>Projects 🛠️</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between;">
+    <div style="flex: 1; min-width: 320px; max-width: 48%;">
+        <div style="border-radius: 16px; overflow: hidden; height: 220px;">
+          <img src="/Users/dineshpathakoti/Downloads/project1.jpg" alt="TCS" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">
+        </div>
+        <h3 style="margin-top: 1rem; font-weight: 700;">ML Approach for Detecting Pepper Crop Diseases</h3>
+        <p style="margin-top: 0.5rem;">Built a machine learning model for detecting pepper crop diseases with 95% accuracy, leveraging image segmentation and optimized feature extraction to reduce classification errors by 15%.</p>
+      </div>
+
+      <div style="flex: 1; min-width: 320px; max-width: 48%;">
+        <div style="border-radius: 16px; overflow: hidden; height: 220px;">
+          <img src="/Users/dineshpathakoti/Downloads/project2.jpg" alt="TCS" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">
+        </div>
+        <h3 style="margin-top: 1rem; font-weight: 700;">Virtual Mouse with Hand Gestures using OpenCV</h3>
+        <p style="margin-top: 0.5rem;">Developed a real-time computer vision system for controlling the mouse cursor using webcam-based hand gesture recognition, achieving 80% detection accuracy with Python and OpenCV.</p>
+      </div>
+  
+    </div>
+  </section>
+
+  <section id="skills" class="section skills-section">
+    <h2 class="skills-title">My Skills 🧠</h2>
+  
+    <div class="skills-container">
+      <!-- Programming -->
+      <div class="skill-card">
+        <img src="https://img.icons8.com/color/48/code.png" alt="Code" class="skill-icon">
+        <h3>Programming & Development</h3>
+        <p>Skilled in Python, Java, C, C++, SQL, and scripting. Experienced in HTML, CSS, and JavaScript to build functional, dynamic applications.</p>
+      </div>
+  
+      <!-- Data Engineering -->
+      <div class="skill-card">
+        <img src="https://img.icons8.com/color/48/database.png" alt="Database" class="skill-icon">
+        <h3>Data Engineering & ETL</h3>
+        <p>Experience building pipelines with Ab Initio, Autosys, and Teradata. Delivered insights via Tableau, Power BI, and Excel dashboards.</p>
+      </div>
+  
+      <!-- Cloud & Big Data -->
+      <div class="skill-card">
+        <img src="https://img.icons8.com/color/48/cloud.png" alt="Cloud" class="skill-icon">
+        <h3>Cloud & Big Data</h3>
+        <p>Hands-on with AWS (EC2, Lambda, S3, VPC), Hadoop, and Apache Spark to process and manage large-scale datasets in cloud environments.</p>
+      </div>
+  
+      <!-- ML & Analytics -->
+      <div class="skill-card">
+        <img src="https://img.icons8.com/color/48/artificial-intelligence.png" alt="AI" class="skill-icon">
+        <h3>ML & Analytics</h3>
+        <p>Built machine learning and computer vision solutions using NumPy, Pandas, OpenCV, and Matplotlib for real-time applications.</p>
+      </div>
+  
+      <!-- Dev Tools -->
+      <div class="skill-card">
+        <img src="https://img.icons8.com/color/48/settings.png" alt="Tools" class="skill-icon">
+        <h3>Tools & Environment</h3>
+        <p>Proficient in Visual Studio, Eclipse, and Ab Initio GDE. Experienced with service tools like ServiceNow for workflow automation.</p>
+      </div>
+    </div>
+  </section>
+  
+  
+  
+  
+  
+
+  <section id="about" class="section" style="max-width: 800px; margin: 0 auto; padding: 4rem 2rem;">
+    <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem;">I’m Dinesh Kumar Pathakoti 👨🏼‍🎓</h2>
+    
+    <p class="about-text">
+      I’m a <strong>Data Engineer</strong> who enjoys solving complex problems and building scalable data systems using a mix of <strong>ETL development, cloud infrastructure, and machine learning</strong>. With professional experience in the <strong>banking</strong> and <strong>higher education</strong> industries, I’ve learned that good engineering isn’t just about code—it’s about impact, collaboration, and curiosity.
+    </p>
+  
+    <p class="about-text" style="margin-top: 1.5rem;">
+      Currently pursuing my <strong>Master’s in Computer Science</strong> at California State University, East Bay, I’ve worked on everything from <strong>AI-powered image processing</strong> to <strong>real-time gesture tracking systems</strong>. Whether I’m optimizing <strong>data pipelines at Citi Bank</strong> or visualizing space usage in Tableau, I aim to make every solution <strong>performant, insightful, and user-driven</strong>.
+    </p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

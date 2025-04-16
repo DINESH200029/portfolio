@@ -7,10 +7,10 @@ function showSection(id) {
   
   // Close mobile menu if open
   const navMenu = document.querySelector('.nav-menu');
-  const hamburger = document.querySelector('.hamburger');
+  const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
   if (navMenu.classList.contains('active')) {
+    mobileMenuToggle.classList.remove('active');
     navMenu.classList.remove('active');
-    hamburger.classList.remove('is-active');
   }
 
   // Scroll to section with offset for header
@@ -28,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleBtn = document.getElementById('toggleMode');
   const body = document.body;
 
+  // Set dark mode as default
+  body.classList.add('dark');
+  localStorage.setItem('darkMode', 'true');
+  
   const updateToggleLabel = () => {
     const isDark = body.classList.contains('dark');
     toggleBtn.textContent = isDark ? 'Light Mode 🌞' : 'Dark Mode 🌚';
@@ -44,33 +48,33 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('darkMode', isDark);
   });
 
-  // Check for saved preference
+  // Check for saved preference (though we've already set dark as default)
   if (localStorage.getItem('darkMode') === 'true') {
     body.classList.add('dark');
     updateToggleLabel();
   }
 
   // Mobile menu toggle
-  const hamburger = document.querySelector('.hamburger');
+  const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
   const navMenu = document.querySelector('.nav-menu');
 
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('is-active');
+  mobileMenuToggle.addEventListener('click', () => {
+    mobileMenuToggle.classList.toggle('active');
     navMenu.classList.toggle('active');
   });
 
   // Close menu when clicking outside
   document.addEventListener('click', (event) => {
     if (!event.target.closest('.main-header') && navMenu.classList.contains('active')) {
-      hamburger.classList.remove('is-active');
+      mobileMenuToggle.classList.remove('active');
       navMenu.classList.remove('active');
     }
   });
 
-  // Prevent scroll when menu is open
+  // Close menu when selecting a menu item
   navMenu.addEventListener('click', (event) => {
     if (event.target.tagName === 'A') {
-      hamburger.classList.remove('is-active');
+      mobileMenuToggle.classList.remove('active');
       navMenu.classList.remove('active');
     }
   });

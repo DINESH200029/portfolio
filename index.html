@@ -1,171 +1,1401 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Dinesh Pathakoti | Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dinesh Kumar Pathakoti | AI/ML Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+:root[data-theme="dark"]{
+  --bg:#0a0a0a;--bg2:#111;--bg3:#161616;
+  --text:#f0f0f0;--text2:#888;
+  --red:#e50000;--red2:#ff2020;
+  --border:#222;--border2:#333;
+  --card:#141414;--nav:rgba(10,10,10,0.93);
+  --node:#1a1a1a;--node-icon:#242424;
+}
+:root[data-theme="light"]{
+  --bg:#f7f7f5;--bg2:#fff;--bg3:#f0ede8;
+  --text:#111;--text2:#666;
+  --red:#c80000;--red2:#e50000;
+  --border:#e8e8e6;--border2:#d8d8d5;
+  --card:#ffffff;--nav:rgba(247,247,245,0.93);
+  --node:#fff;--node-icon:#f5f3f0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;transition:background 0.4s,color 0.4s;}
+h1,h2,h3,h4,h5,h6{font-family:'Space Grotesk',sans-serif;}
+a{color:var(--red);text-decoration:none;}
+
+#splash{
+  position:fixed;inset:0;z-index:999999;background:#f7f7f5;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity 0.7s ease;
+}
+#splash-greeting{
+  font-family:'JetBrains Mono',monospace;font-size:clamp(1rem,3vw,1.4rem);
+  color:#e50000;margin-bottom:1rem;letter-spacing:0.05em;text-align:center;padding:0 2rem;
+}
+#splash-quote{
+  font-family:'Inter',sans-serif;font-size:clamp(0.8rem,2vw,1rem);
+  color:#555;max-width:520px;text-align:center;padding:0 2rem;line-height:1.9;font-style:italic;
+}
+#splash-bar-wrap{margin-top:2.5rem;width:160px;height:2px;background:#dddddd;border-radius:2px;overflow:hidden;}
+#splash-bar{height:100%;width:0%;background:#e50000;}
+#splash-skip{
+  position:absolute;bottom:2rem;right:2rem;
+  font-family:'JetBrains Mono',monospace;font-size:0.72rem;
+  color:#999;cursor:pointer;letter-spacing:0.1em;
+  border:1px solid #ddd;padding:5px 12px;border-radius:4px;
+  transition:color 0.2s,border-color 0.2s;
+}
+#splash-skip:hover{color:#e50000;border-color:#e50000;}
+
+#scroll-bar{position:fixed;top:0;left:0;height:2px;width:0%;background:var(--red);z-index:10002;}
+
+#cursor-glow{
+  position:fixed;top:0;left:0;width:300px;height:300px;border-radius:50%;
+  pointer-events:none;z-index:9998;opacity:0;
+  background:radial-gradient(circle,rgba(200,0,0,0.13) 0%,rgba(200,0,0,0.05) 40%,transparent 70%);
+  transition:opacity 0.4s;will-change:transform;
+}
+
+nav{position:fixed;top:0;width:100%;background:var(--nav);backdrop-filter:blur(14px);z-index:1000;border-bottom:1px solid var(--border);}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1280px;margin:0 auto;padding:0 2rem;gap:1rem;}
+.nav-left{display:flex;align-items:center;gap:1.5rem;flex-shrink:0;}
+.nav-brand{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:1px;color:var(--text);}
+.nav-location{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text2);letter-spacing:0.04em;white-space:nowrap;}
+.nav-location i{color:var(--red);margin-right:4px;}
+.nav-links{display:flex;gap:1.8rem;list-style:none;flex:1;justify-content:center;}
+.nav-links a{color:var(--text2);font-size:0.85rem;font-weight:500;position:relative;transition:color 0.2s;}
+.nav-links a::after{content:'';position:absolute;width:0;height:1.5px;bottom:-4px;left:0;background:var(--red);transition:width 0.25s;}
+.nav-links a:hover,.nav-links a.active{color:var(--text);}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+.nav-right{display:flex;align-items:center;gap:0.75rem;flex-shrink:0;}
+#clock{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--text2);letter-spacing:0.04em;white-space:nowrap;}
+#theme-toggle{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:8px;
+  border:1px solid var(--border2);background:var(--bg2);
+  color:var(--text2);font-size:0.95rem;cursor:pointer;
+  transition:all 0.25s;flex-shrink:0;
+}
+#theme-toggle:hover{border-color:var(--red);color:var(--red);}
+
+section{padding:3rem 0;border-bottom:1px solid var(--border);position:relative;}
+.container{max-width:1200px;margin:0 auto;padding:0 2.5rem;}
+.section-title{font-size:clamp(1.8rem,3vw,2.4rem);margin-bottom:3rem;position:relative;display:inline-block;letter-spacing:-0.02em;}
+.section-title::after{content:'';position:absolute;left:0;bottom:-8px;width:50%;height:2.5px;background:var(--red);}
+.hl{color:var(--red);}
+
+.btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.9rem;border:1.5px solid var(--red);background:transparent;color:var(--text);border-radius:6px;position:relative;overflow:hidden;z-index:1;cursor:pointer;transition:color 0.3s;}
+.btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--red);transition:left 0.3s ease;z-index:-1;}
+.btn:hover::before{left:0;}
+.btn:hover{color:#fff;}
+.btn-primary{background:var(--red);color:#fff;border-color:var(--red);}
+.btn-primary:hover{background:var(--red2);}
+
+#hero{height:100vh;min-height:600px;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:64px;border-bottom:none;}
+#hero-canvas{position:absolute;inset:0;z-index:0;}
+.scanlines{position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent,transparent 3px,rgba(0,0,0,0.02) 3px,rgba(0,0,0,0.02) 4px);z-index:1;pointer-events:none;}
+.hero-content{position:relative;z-index:2;}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--red);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:0.75rem;}
+.hero-content h1{font-size:clamp(2.4rem,5vw,4rem);line-height:1.1;margin-bottom:1rem;letter-spacing:-0.03em;}
+.name-under{position:relative;display:inline-block;}
+.name-under::after{content:'';position:absolute;width:100%;height:7px;bottom:4px;left:0;background:var(--red);opacity:0.4;z-index:-1;transform:skewX(-12deg);}
+.typewriter-wrap{font-size:clamp(1.1rem,2.5vw,1.55rem);color:var(--text2);margin-bottom:2.2rem;height:2.2rem;font-family:'Space Grotesk',sans-serif;font-weight:600;}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+.hero-tags{display:flex;gap:0.6rem;margin-top:2.2rem;flex-wrap:wrap;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:0.68rem;padding:4px 10px;border:1px solid var(--border2);border-radius:20px;color:var(--text2);letter-spacing:0.05em;}
+
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.bio{font-size:1.02rem;color:var(--text2);margin-bottom:1.5rem;line-height:1.8;}
+.skills-container{display:flex;flex-direction:column;gap:1.4rem;}
+.skill-item{width:100%;}
+.skill-header{display:flex;justify-content:space-between;margin-bottom:0.5rem;font-size:0.88rem;font-weight:600;}
+.skill-pct{color:var(--red);font-family:'JetBrains Mono',monospace;}
+.skill-bar{width:100%;height:6px;background:var(--border2);border-radius:3px;overflow:hidden;}
+.skill-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--red2));width:0;transition:width 1.6s cubic-bezier(0.1,0.5,0.1,1);border-radius:3px;}
+.radar-container{width:100%;max-width:440px;margin:0 auto;}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2rem;margin-bottom:2rem;position:relative;transition:transform 0.3s,box-shadow 0.3s,border-color 0.3s;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:var(--red);transition:height 0.4s ease;}
+.card:hover::before{height:100%;}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.12);border-color:var(--red);}
+:root[data-theme="dark"] .card:hover{box-shadow:0 16px 40px rgba(0,0,0,0.5);}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;}
+.card-title h3{font-size:1.35rem;color:var(--red);}
+.card-title h4{font-size:0.95rem;color:var(--text2);margin-top:0.25rem;}
+.card-date{font-family:'JetBrains Mono',monospace;font-size:0.72rem;background:var(--bg3);padding:0.3rem 0.9rem;border-radius:20px;border:1px solid var(--border);color:var(--text2);white-space:nowrap;}
+.card-bullets{list-style:none;margin-bottom:1.8rem;}
+.card-bullets li{position:relative;padding-left:1.4rem;margin-bottom:0.75rem;color:var(--text2);font-size:0.91rem;line-height:1.7;}
+.card-bullets li::before{content:'>';position:absolute;left:0;color:var(--red);font-family:'JetBrains Mono',monospace;font-size:0.8rem;top:2px;}
+
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:2rem;}
+.project-card{display:flex;flex-direction:column;}
+.project-card .card-bullets{flex-grow:1;}
+.tech-stack{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1.2rem;}
+.tech-badge{font-family:'JetBrains Mono',monospace;font-size:0.67rem;padding:3px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--text2);letter-spacing:0.04em;}
+
+.diagram-legend{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;margin-bottom:0.5rem;font-size:10px;color:var(--text2);font-family:'JetBrains Mono',monospace;}
+.legend-items{display:flex;gap:0.9rem;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:0.3rem;}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;}
+.diagram-container{width:100%;height:520px;min-height:520px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;position:relative;overflow:hidden;cursor:grab;}
+.diagram-container:active{cursor:grabbing;}
+@keyframes flowAnim{from{stroke-dashoffset:36;}to{stroke-dashoffset:0;}}
+.d3-link{fill:none;stroke:var(--text2);stroke-width:1.8px;opacity:0.5;stroke-dasharray:8 4;animation:flowAnim 1.3s linear infinite;transition:stroke 0.3s,opacity 0.3s,stroke-width 0.3s;}
+.d3-link.highlighted{stroke:var(--red);stroke-width:2.5px;opacity:1;}
+.workflow-node{display:flex;align-items:center;background:var(--node);border:1px solid var(--border);border-radius:8px;width:100%;height:100%;padding:6px;color:var(--text);font-family:'Inter',sans-serif;transition:border-color 0.2s;}
+.workflow-node:hover{border-color:var(--red);}
+.type-input{border-left:3px solid #1a73e8!important;}
+.type-process{border-left:3px solid #f59e0b!important;}
+.type-model{border-left:3px solid #e50000!important;}
+.type-output{border-left:3px solid #10b981!important;}
+.type-eval{border-left:3px solid #8b5cf6!important;}
+.type-infra{border-left:3px solid #06b6d4!important;}
+.node-icon{width:30px;height:30px;min-width:30px;background:var(--node-icon);border-radius:5px;display:flex;align-items:center;justify-content:center;margin-right:7px;color:var(--red);font-size:12px;}
+.node-content{display:flex;flex-direction:column;justify-content:center;overflow:hidden;}
+.node-title{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.node-desc{font-size:9px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;}
+.d3-tooltip{position:fixed;background:var(--card);border:1px solid var(--red);color:var(--text);padding:9px 13px;border-radius:7px;font-size:0.8rem;pointer-events:none;opacity:0;transition:opacity 0.15s;z-index:10000;max-width:220px;line-height:1.5;}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1.5rem;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.8rem;text-align:center;transition:transform 0.3s,border-color 0.3s;}
+.stat-card:hover{transform:translateY(-5px);border-color:var(--red);}
+.stat-icon{font-size:2rem;color:var(--red);margin-bottom:0.8rem;}
+.stat-number{font-family:'Space Grotesk',sans-serif;font-size:2.8rem;font-weight:700;color:var(--text);margin-bottom:0.4rem;}
+.stat-label{color:var(--text2);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;}
+
+.timeline{position:relative;max-width:780px;margin:0 auto;}
+.timeline::before{content:'';position:absolute;width:1.5px;background:var(--red);top:0;bottom:0;left:18px;opacity:0.35;}
+.timeline-item{padding:1.5rem 0 1.5rem 58px;position:relative;}
+.timeline-item::before{content:'';position:absolute;width:13px;height:13px;background:var(--bg);border:2px solid var(--red);border-radius:50%;left:12px;top:2rem;z-index:1;}
+.timeline-content{background:var(--card);border:1px solid var(--border);padding:1.4rem;border-radius:10px;transition:border-color 0.3s;}
+.timeline-content:hover{border-color:var(--red);}
+.timeline-content h3{color:var(--red);margin-bottom:0.3rem;font-size:1.1rem;}
+.timeline-content h4{font-size:0.93rem;margin-bottom:0.4rem;}
+.timeline-content p{color:var(--text2);font-size:0.87rem;line-height:1.7;}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;}
+.contact-info{display:flex;flex-direction:column;gap:1.6rem;}
+.contact-item{display:flex;align-items:center;gap:1.2rem;}
+.contact-icon{width:44px;height:44px;background:var(--bg2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--red);transition:background 0.3s,color 0.3s;}
+.contact-item:hover .contact-icon{background:var(--red);color:#fff;}
+.contact-details h4{margin-bottom:0.15rem;font-size:0.82rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.07em;}
+.contact-details p,.contact-details a{font-size:0.92rem;color:var(--text);}
+.contact-form{display:flex;flex-direction:column;gap:1.1rem;}
+.form-group{display:flex;flex-direction:column;gap:0.35rem;}
+.form-group label{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text2);letter-spacing:0.1em;}
+.form-group input,.form-group textarea{background:var(--bg2);border:1px solid var(--border);padding:0.85rem 1rem;border-radius:6px;color:var(--text);font-family:'Inter',sans-serif;font-size:0.9rem;transition:border-color 0.2s;}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--red);}
+.form-group textarea{resize:vertical;min-height:110px;}
+
+#toast{position:fixed;bottom:2rem;right:-320px;background:var(--card);border-left:3px solid #10b981;padding:1rem 1.5rem;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.15);color:var(--text);font-size:0.87rem;transition:right 0.4s cubic-bezier(0.68,-0.55,0.27,1.55);z-index:10000;}
+#toast.show{right:2rem;}
+
+footer{position:relative;overflow:hidden;border-top:1px solid var(--border);text-align:center;}
+#matrix-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:0.1;}
+.footer-inner{position:relative;z-index:1;padding:1.4rem 2rem;}
+footer p{color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:0.7rem;letter-spacing:0.08em;}
+
+@media(max-width:900px){
+  .about-grid,.contact-grid{grid-template-columns:1fr;}
+  .hero-content h1{font-size:2.4rem;}
+  .nav-links{display:none;}
+  .projects-grid{grid-template-columns:1fr;}
+  .nav-location{display:none;}
+}
+</style>
 </head>
-<body class="dark">
-  <header class="main-header">
-    <a href="#" onclick="showSection('home')" style="text-decoration: none;">
-      <div class="logo-container">
-        <img src="dplogo.jpg" alt="DP Logo" class="logo-img" />
+<body>
+
+<div id="splash">
+  <div id="splash-greeting"></div>
+  <div id="splash-quote"></div>
+  <div id="splash-bar-wrap"><div id="splash-bar"></div></div>
+  <div id="splash-skip" onclick="exitSplash()">SKIP</div>
+</div>
+
+<div id="scroll-bar"></div>
+<div id="cursor-glow"></div>
+<div id="d3-tooltip" class="d3-tooltip"></div>
+<div id="toast">Message sent successfully.</div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="#hero" class="nav-brand" style="text-decoration:none;">DK<span class="hl">.</span></a>
+      <div class="nav-location"><i class="fa-solid fa-location-dot"></i>SF Bay Area &middot; Open to relocate</div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#hero" class="active">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#involvement">Involvement</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <div id="clock">00:00:00</div>
+      <button id="theme-toggle" aria-label="Toggle theme"><i class="fa-solid fa-moon" id="theme-icon"></i></button>
+    </div>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="scanlines"></div>
+  <canvas id="hero-canvas"></canvas>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-eyebrow">// AI &middot; ML &middot; Systems</div>
+      <h1>Hi, I am <span class="name-under" style="color:var(--red);"><br>Dinesh</span></h1>
+      <div class="typewriter-wrap" id="typewriter"></div>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> View Projects</a>
+        <a href="resume.pdf" class="btn"><i class="fa-solid fa-download"></i> Resume</a>
       </div>
-    </a>
+      <div class="hero-tags">
+        <span class="hero-tag">LLMs &amp; RAG</span>
+        <span class="hero-tag">MLOps</span>
+        <span class="hero-tag">Distributed Systems</span>
+        <span class="hero-tag">Production ML</span>
+        <span class="hero-tag">LLM Evaluation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <h2 class="section-title">System <span class="hl">Config</span></h2>
+    <div class="about-grid">
+      <div>
+        <p class="bio">AI/ML Engineer with 4+ years building production ML systems across LLM evaluation, retrieval, ranking, and real-time infrastructure. At Shopify I focus on eval pipelines and reliability for Shopify Magic. At Uber I scaled driver-matching models using Michelangelo, Spark, Flink, and feature-store pipelines.</p>
+        <p class="bio">I care deeply about making model releases safer - rigorous regression checks, latency optimization, production guardrails, and A/B statistical validation.</p>
+        <div class="skills-container">
+          <div class="skill-item"><div class="skill-header"><span>Python / PyTorch / TensorFlow</span><span class="skill-pct">95%</span></div><div class="skill-bar"><div class="skill-fill" data-w="95%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span>LLMs / RAG / Prompting</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" data-w="90%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span>MLOps / Pipeline Infra</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill" data-w="88%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span>Spark / Flink / Distributed</span><span class="skill-pct">82%</span></div><div class="skill-bar"><div class="skill-fill" data-w="82%"></div></div></div>
+          <div class="skill-item"><div class="skill-header"><span>System Design / Architecture</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-w="80%"></div></div></div>
+        </div>
+      </div>
+      <div class="radar-container">
+        <canvas id="skillsRadar" width="400" height="400"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="container">
+    <h2 class="section-title">Execution <span class="hl">Logs</span></h2>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><h3>Shopify</h3><h4>AI/ML Engineer</h4></div>
+        <div class="card-date">06/2025 &ndash; Present</div>
+      </div>
+      <ul class="card-bullets">
+        <li>Developed structured evaluation checks for Shopify Magic product-description workflows using a 1,200-query merchant test set, measuring tone consistency, factual accuracy, and merchant-specific edge cases across prompt and model-version comparisons.</li>
+        <li></li>
+        <li>Analyzed merchant-dashboard inference workflows and evaluated async serving with response caching, improving benchmarked p95 response latency from 480ms to 360ms.</li>
+            <li>Evaluated Sidekick merchant-support responses across 400 held-out conversations, supporting LoRA/PEFT checkpoint comparisons against response consistency, preference quality, and non-English query handling.</li>
+          </ul>
+            <div style="margin-top:0.5rem;">
+              <span onclick="openShopifyDialog()" style="color:var(--red);font-size:0.82rem;font-family:'JetBrains Mono',monospace;cursor:pointer;letter-spacing:0.04em;border-bottom:1px dashed var(--red);padding-bottom:1px;">&#x2192; Curious how this all actually worked? Read the story</span>
+            </div>
+
+          
+      <div class="diagram-legend">
+        <div class="legend-items">
+          <span class="legend-item"><span class="dot" style="background:#1a73e8"></span>Input</span>
+          <span class="legend-item"><span class="dot" style="background:#f59e0b"></span>Processing</span>
+          <span class="legend-item"><span class="dot" style="background:#e50000"></span>Model</span>
+          <span class="legend-item"><span class="dot" style="background:#10b981"></span>Output</span>
+          <span class="legend-item"><span class="dot" style="background:#8b5cf6"></span>Eval</span>
+          <span class="legend-item"><span class="dot" style="background:#06b6d4"></span>Infra</span>
+        </div>
+        <span>scroll to zoom &middot; click node to trace</span>
+      </div>
+      <div class="diagram-container" id="diagram-shopify"></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><h3>Uber</h3><h4>AI/ML Engineer</h4></div>
+        <div class="card-date">08/2020 &ndash; 08/2023</div>
+      </div>
+      <ul class="card-bullets">
+        <li>Contributed to XGBoost-based driver-matching ranking models on Michelangelo, Uber’s internal ML platform; worked on feature selection and offline evaluation for models that scored driver-ride pairs using proximity, acceptance history, and trip-context signals across regions.</li>
+        <li>Supported migration of demand and supply features for Michelangelo models from overnight Hive batch jobs to near-real-time Flink pipelines, reducing feature freshness from multi-hour lag to under five minutes for marketplace analysis.</li>
+        <li>Ran A/B tests on ranking-model updates tracking acceptance rate, cancellation rate, and ETA error as key business guardrails.</li>
+            </ul>
+            <div style="margin-top:0.5rem;">
+              <span onclick="openUberDialog()" style="color:var(--red);font-size:0.82rem;font-family:'JetBrains Mono',monospace;cursor:pointer;letter-spacing:0.04em;border-bottom:1px dashed var(--red);padding-bottom:1px;">&#x2192; Wonder how millions of rides got matched every day? Here's the story</span>
+            </div>
+      <div class="diagram-legend">
+        <div class="legend-items">
+          <span class="legend-item"><span class="dot" style="background:#1a73e8"></span>Input</span>
+          <span class="legend-item"><span class="dot" style="background:#f59e0b"></span>Processing</span>
+          <span class="legend-item"><span class="dot" style="background:#e50000"></span>Model</span>
+          <span class="legend-item"><span class="dot" style="background:#10b981"></span>Output</span>
+          <span class="legend-item"><span class="dot" style="background:#8b5cf6"></span>Eval</span>
+          <span class="legend-item"><span class="dot" style="background:#06b6d4"></span>Infra</span>
+        </div>
+        <span>scroll to zoom &middot; click node to trace</span>
+      </div>
+      <div class="diagram-container" id="diagram-uber"></div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container">
+    <h2 class="section-title">Deployed <span class="hl">Artifacts</span></h2>
+    <div class="projects-grid">
+      <div class="card project-card">
+        <div class="card-title"><h3>Production RAG Eval Framework</h3><h4>LLM Evaluation / Vector DBs</h4></div>
+        <ul class="card-bullets" style="margin-top:1rem;">
+          <li>Evaluation harness scoring retrieval quality (NDCG/MRR) and generation quality via RAGAS faithfulness and answer relevance.</li>
+          <li>Rolling-window drift alerts that notify when faithfulness or relevance drops versus 7-day baseline.</li>
+        </ul>
+        <div class="tech-stack"><span class="tech-badge">Python</span><span class="tech-badge">RAGAS</span><span class="tech-badge">FAISS</span><span class="tech-badge">Pinecone</span><span class="tech-badge">LangChain</span></div>
+        <div class="diagram-legend" style="margin-top:1rem;">
+          <div class="legend-items"><span class="legend-item"><span class="dot" style="background:#1a73e8"></span>Input</span><span class="legend-item"><span class="dot" style="background:#e50000"></span>Model</span><span class="legend-item"><span class="dot" style="background:#8b5cf6"></span>Eval</span></div>
+          <span>trace path</span>
+        </div>
+        <div class="diagram-container" id="diagram-proj1"></div>
+      </div>
+      <div class="card project-card">
+        <div class="card-title"><h3>HealthOps Analyst Agent</h3><h4>Multi-Agent / Healthcare</h4></div>
+        <ul class="card-bullets" style="margin-top:1rem;">
+          <li>Patient-intake assistant using multi-agent workflow with FAISS retrieval and PostgreSQL structured records.</li>
+          <li>Caregiver-patient matching component scored by location proximity and clinical acuity level.</li>
+        </ul>
+        <div class="tech-stack"><span class="tech-badge">GCP</span><span class="tech-badge">LangChain</span><span class="tech-badge">PostgreSQL</span><span class="tech-badge">OpenAI</span><span class="tech-badge">FAISS</span></div>
+        <div class="diagram-legend" style="margin-top:1rem;">
+          <div class="legend-items"><span class="legend-item"><span class="dot" style="background:#1a73e8"></span>Input</span><span class="legend-item"><span class="dot" style="background:#f59e0b"></span>Process</span><span class="legend-item"><span class="dot" style="background:#e50000"></span>Model</span><span class="legend-item"><span class="dot" style="background:#10b981"></span>Output</span></div>
+          <span>trace path</span>
+        </div>
+        <div class="diagram-container" id="diagram-proj2"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="achievements">
+  <div class="container">
+    <h2 class="section-title">Telemetry <span class="hl">Data</span></h2>
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card"><div class="stat-icon"><i class="fa-solid fa-bolt"></i></div><div class="stat-number" data-target="25" data-suffix="%">0</div><div class="stat-label">Latency Reduction</div></div>
+      <div class="stat-card"><div class="stat-icon"><i class="fa-solid fa-brain"></i></div><div class="stat-number" data-target="1200" data-suffix="+">0</div><div class="stat-label">Queries Evaluated</div></div>
+      <div class="stat-card"><div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div><div class="stat-number" data-target="5" data-suffix="+">0</div><div class="stat-label">ML Systems Shipped</div></div>
+      <div class="stat-card"><div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div><div class="stat-number" data-target="4" data-suffix="+">0</div><div class="stat-label">Years ML Engineering</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="container">
+    <h2 class="section-title">Knowledge <span class="hl">Base</span></h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>California State University, East Bay</h3>
+          <h4>Master of Science &mdash; Computer Science</h4>
+          <p>Aug 2023 &ndash; May 2025 &middot; San Francisco Bay Area</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>Sreenidhi Institute of Science and Technology</h3>
+          <h4>Bachelor of Technology &mdash; Computer Science and Engineering</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="involvement">
+  <div class="container">
+    <h2 class="section-title">Assistantship &amp; <span class="hl">Volunteering</span></h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>Graduate Assistant</h3>
+          <h4>California State University, East Bay</h4>
+          <p>Built a Tableau dashboard that turned university event data into insights on scheduling, space usage, revenue, and KPIs, reducing manual reporting by over 20%.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>CSUEB MESA STEM Judge &amp; Evaluator</h3>
+          <h4>Volunteer</h4>
+          <p>Evaluated AI, coding, and engineering design projects from 80+ K-12 teams across 20+ Bay Area schools, providing structured feedback to support early STEM talent development.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <h2 class="section-title">Establish <span class="hl">Connection</span></h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item"><div class="contact-icon"><i class="fa-solid fa-envelope"></i></div><div class="contact-details"><h4>Email</h4><p>dineshpatha2905@gmail.com</p></div></div>
+        <div class="contact-item"><div class="contact-icon"><i class="fa-solid fa-phone"></i></div><div class="contact-details"><h4>Phone</h4><p>+1 408-508-4091</p></div></div>
+        <div class="contact-item"><div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div><div class="contact-details"><h4>Location</h4><p>San Francisco Bay Area, CA</p></div></div>
+        <div class="contact-item"><div class="contact-icon"><i class="fa-brands fa-linkedin-in"></i></div><div class="contact-details"><h4>LinkedIn</h4><a href="https://www.linkedin.com/in/dinesh-kumar-pathakoti/" target="_blank">linkedin.com/in/dinesh-kumar-pathakoti</a></div></div>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <div class="form-group"><label>NAME</label><input type="text" required placeholder="John Doe"></div>
+        <div class="form-group"><label>EMAIL</label><input type="email" required placeholder="john@domain.com"></div>
+        <div class="form-group"><label>MESSAGE</label><textarea required placeholder="Enter your message..."></textarea></div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <canvas id="matrix-canvas"></canvas>
+  <div class="footer-inner">
+    <p>&copy; 2026 Dinesh Kumar Pathakoti &middot; System Online &middot; SF Bay Area</p>
+  </div>
+</footer>
+
+<script>
+var QUOTES = [
+  "AI is not about replacing humans. It is about amplifying what we can do.",
+  "Every model in production is a promise to the user. Keep it.",
+  "The best ML systems are the ones that know when they are wrong.",
+  "In a world of black boxes, interpretability is kindness.",
+  "Data is the new soil. Models are the seeds. Evaluation is the harvest.",
+  "AI is making doctors faster, teachers more present, engineers more creative.",
+  "Real intelligence, artificial or natural, is knowing what you do not know."
+];
+var GREET = [
+  "Hey! Thanks for stopping by.",
+  "Welcome. Glad you are here.",
+  "Hello! You are about to see some real ML work.",
+  "Thanks for visiting this portfolio."
+];
+
+var splashDone = false;
+function exitSplash() {
+  if (splashDone) return;
+  splashDone = true;
+  var s = document.getElementById('splash');
+  s.style.opacity = '0';
+  setTimeout(function() { if (s.parentNode) s.parentNode.removeChild(s); }, 700);
+}
+
+(function() {
+  var sg = document.getElementById('splash-greeting');
+  var sq = document.getElementById('splash-quote');
+  var sb = document.getElementById('splash-bar');
+  sg.textContent = GREET[Math.floor(Math.random() * GREET.length)];
+  sq.textContent = '"' + QUOTES[Math.floor(Math.random() * QUOTES.length)] + '"';
+  var DUR = 4500, STEP = 50, elapsed = 0;
+  var t = setInterval(function() {
+    elapsed += STEP;
+    sb.style.width = (elapsed / DUR * 100) + '%';
+    if (elapsed >= DUR) { clearInterval(t); exitSplash(); }
+  }, STEP);
+})();
+
+function updateClock() {
+  var n = new Date();
+  var h = String(n.getHours()).padStart(2,'0');
+  var m = String(n.getMinutes()).padStart(2,'0');
+  var s = String(n.getSeconds()).padStart(2,'0');
+  var el = document.getElementById('clock');
+  if (el) el.textContent = h + ':' + m + ':' + s;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+window.addEventListener('scroll', function() {
+  var h = document.documentElement;
+  var pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+  var bar = document.getElementById('scroll-bar');
+  if (bar) bar.style.width = pct + '%';
+});
+
+var glow = document.getElementById('cursor-glow');
+var glowOn = false;
+window.addEventListener('mousemove', function(e) {
+  if (!glowOn) { glow.style.opacity = '1'; glowOn = true; }
+  glow.style.transform = 'translate(' + (e.clientX - 150) + 'px,' + (e.clientY - 150) + 'px)';
+});
+
+var HTML = document.documentElement;
+var TBTN = document.getElementById('theme-toggle');
+var TICO = document.getElementById('theme-icon');
+var isDark = localStorage.getItem('theme') === 'dark';
+function applyTheme() {
+  HTML.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  TICO.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  glow.style.background = isDark
+    ? 'radial-gradient(circle,rgba(229,0,0,0.16) 0%,rgba(229,0,0,0.06) 40%,transparent 70%)'
+    : 'radial-gradient(circle,rgba(200,0,0,0.10) 0%,rgba(200,0,0,0.04) 40%,transparent 70%)';
+}
+applyTheme();
+TBTN.addEventListener('click', function() {
+  isDark = !isDark;
+  applyTheme();
+  if (radarChart) { radarChart.destroy(); radarChart = null; chartDone = false; initChart(); }
+  initParticles();
+});
+
+var TITLES = [
+  "AI/ML Engineer",
+  "LLM Evaluation Engineer",
+  "Production ML Engineer",
+  "RAG & Retrieval Engineer",
+  "MLOps Engineer",
+  "Ranking Systems Engineer"
+];
+var ti = 0, ci = 0, del = false;
+var tel = document.getElementById('typewriter');
+function type() {
+  var cur = TITLES[ti];
+  tel.textContent = '> ' + (del ? cur.slice(0, --ci) : cur.slice(0, ++ci)) + '_';
+  var sp = del ? 45 : 95;
+  if (!del && ci === cur.length) { sp = 2200; del = true; }
+  else if (del && ci === 0) { del = false; ti = (ti + 1) % TITLES.length; sp = 400; }
+  setTimeout(type, sp);
+}
+type();
+
+var CV = document.getElementById('hero-canvas');
+var CX = CV.getContext('2d');
+var pts = [];
+CV.width = window.innerWidth; CV.height = window.innerHeight;
+function mkPt() { return { x: Math.random()*CV.width, y: Math.random()*CV.height, r: Math.random()*1.6+0.5, dx: (Math.random()-0.5)*0.6, dy: (Math.random()-0.5)*0.6 }; }
+function initParticles() {
+  pts = [];
+  var n = Math.floor(CV.width * CV.height / 14000);
+  for (var i = 0; i < n; i++) pts.push(mkPt());
+}
+var thresh = 0;
+function drawPts() {
+  requestAnimationFrame(drawPts);
+  CX.clearRect(0, 0, CV.width, CV.height);
+  thresh = Math.min(CV.width, CV.height) * 0.12;
+  var ac = isDark ? 'rgba(229,0,0,' : 'rgba(200,0,0,';
+  for (var i = 0; i < pts.length; i++) {
+    var p = pts[i];
+    p.x += p.dx; p.y += p.dy;
+    if (p.x < 0 || p.x > CV.width) p.dx *= -1;
+    if (p.y < 0 || p.y > CV.height) p.dy *= -1;
+    CX.beginPath(); CX.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    CX.fillStyle = ac + '0.5)'; CX.fill();
+    for (var j = i+1; j < pts.length; j++) {
+      var q = pts[j];
+      var d = Math.hypot(p.x - q.x, p.y - q.y);
+      if (d < thresh) {
+        CX.beginPath(); CX.moveTo(p.x, p.y); CX.lineTo(q.x, q.y);
+        CX.strokeStyle = ac + (0.15*(1-d/thresh)) + ')';
+        CX.lineWidth = 0.7; CX.stroke();
+      }
+    }
+  }
+}
+window.addEventListener('resize', function() { CV.width = window.innerWidth; CV.height = window.innerHeight; initParticles(); });
+initParticles(); drawPts();
+
+var radarChart = null, chartDone = false;
+function initChart() {
+  var el = document.getElementById('skillsRadar');
+  if (!el) return;
+  if (radarChart) { radarChart.destroy(); radarChart = null; }
+  chartDone = false;
+  var ac = isDark ? '#e50000' : '#c80000';
+  var gc = isDark ? '#2a2a2a' : '#e8e8e6';
+  var tc = isDark ? '#f0f0f0' : '#111';
+  radarChart = new Chart(el.getContext('2d'), {
+    type: 'radar',
+    data: {
+      labels: ['Algorithms','Data Eng','MLOps','Sys Design','Analytics','NLP/LLMs'],
+      datasets: [{ label: 'Proficiency', data: [90,85,88,82,80,95],
+        backgroundColor: isDark ? 'rgba(229,0,0,0.14)' : 'rgba(200,0,0,0.1)',
+        borderColor: ac, pointBackgroundColor: ac, pointBorderColor: '#fff', borderWidth: 2 }]
+    },
+    options: {
+      scales: { r: { min:0, max:100, angleLines: {color:gc}, grid: {color:gc}, pointLabels: {color:tc,font:{family:'Space Grotesk',size:11}}, ticks: {display:false, stepSize:20} } },
+      plugins: { legend: {display:false} },
+      animation: { duration: 1400, easing: 'easeOutQuart' }
+    }
+  });
+  chartDone = true;
+}
+
+var skillsDone = false;
+var statsDone = false;
+function onScroll() {
+  var sections = document.querySelectorAll('section');
+  sections.forEach(function(sec) {
+    var rect = sec.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.85) {
+      var id = sec.id;
+      document.querySelectorAll('.nav-links a').forEach(function(a) {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+  var aboutSec = document.getElementById('about');
+  if (aboutSec) {
+    var r = aboutSec.getBoundingClientRect();
+    if (r.top < window.innerHeight * 0.9 && !skillsDone) {
+      skillsDone = true;
+      document.querySelectorAll('.skill-fill').forEach(function(el) { el.style.width = el.getAttribute('data-w'); });
+      initChart();
+    }
+  }
+  var statsGrid = document.getElementById('stats-grid');
+  if (statsGrid && !statsDone) {
+    var r2 = statsGrid.getBoundingClientRect();
+    if (r2.top < window.innerHeight * 0.9) {
+      statsDone = true;
+      statsGrid.querySelectorAll('.stat-number').forEach(function(el) {
+        var tgt = parseInt(el.getAttribute('data-target'));
+        var suf = el.getAttribute('data-suffix') || '';
+        var c = 0;
+        var tick = function() { c += tgt/60; if (c < tgt) { el.textContent = Math.ceil(c) + suf; setTimeout(tick, 35); } else { el.textContent = tgt + suf; } };
+        tick();
+      });
+    }
+  }
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+  e.target.reset();
+});
+
+var d3tip = d3.select('#d3-tooltip');
+function drawD3(id, data) {
+  var cont = document.getElementById(id);
+  var sel = d3.select('#' + id);
+  function render() {
+    if (!cont || cont.clientWidth === 0) { setTimeout(render, 300); return; }
+    sel.selectAll('svg').remove();
+    var W = cont.clientWidth, H = cont.clientHeight;
+    var NW = 150, NH = 50, PX = 200;
+    var svg = sel.append('svg').attr('width','100%').attr('height','100%').attr('viewBox','0 0 '+W+' '+H)
+      .call(d3.zoom().scaleExtent([0.3,3.5]).on('zoom', function(ev) { g.attr('transform', ev.transform); }))
+      .on('click', function() { svg.selectAll('.d3-link').classed('highlighted',false).attr('marker-end','url(#a-'+id+')'); });
+    var defs = svg.append('defs');
+    function mkM(mid, fill) {
+      defs.append('marker').attr('id',mid).attr('viewBox','0 -5 10 10').attr('refX',7).attr('refY',0)
+        .attr('markerWidth',5).attr('markerHeight',5).attr('orient','auto')
+        .append('path').attr('d','M0,-5L10,0L0,5').attr('fill',fill);
+    }
+    mkM('a-'+id, 'var(--text2)');
+    mkM('ag-'+id, 'var(--red)');
+    var g = svg.append('g');
+    data.nodes.forEach(function(n) {
+      var L = data.nodes.filter(function(x) { return x.layer === n.layer; });
+      var idx = L.indexOf(n);
+      n.x = (n.layer + 0.5) * PX;
+      n.y = H/2 + (idx - (L.length-1)/2) * 70;
+    });
+    var lk = d3.linkHorizontal()
+      .source(function(d) { var s = data.nodes.find(function(n){return n.id===d.source;}); return [s.x+NW/2, s.y]; })
+      .target(function(d) { var t = data.nodes.find(function(n){return n.id===d.target;}); return [t.x-NW/2, t.y]; });
+    g.append('g').selectAll('path').data(data.links).enter().append('path')
+      .attr('class','d3-link').attr('marker-end','url(#a-'+id+')').attr('d',lk);
+    var node = g.append('g').selectAll('g').data(data.nodes).enter().append('g')
+      .attr('transform', function(d) { return 'translate('+d.x+','+d.y+')'; })
+      .on('mouseover', function(ev,d) {
+        d3tip.style('opacity',0.96).style('left',(ev.clientX+14)+'px').style('top',(ev.clientY-32)+'px')
+          .html('<strong>'+d.label+'</strong><br><span style="color:var(--text2);font-size:0.76rem;">'+d.desc+'</span>');
+      })
+      .on('mouseout', function() { d3tip.style('opacity',0); })
+      .on('click', function(ev,d) {
+        ev.stopPropagation();
+        svg.selectAll('.d3-link').classed('highlighted',false).attr('marker-end','url(#a-'+id+')');
+        svg.selectAll('.d3-link').filter(function(l){return l.source===d.id||l.target===d.id;})
+          .classed('highlighted',true).attr('marker-end','url(#ag-'+id+')');
+      });
+    node.append('foreignObject').attr('x',-NW/2).attr('y',-NH/2).attr('width',NW).attr('height',NH)
+      .append('xhtml:div').attr('class',function(d){return 'workflow-node type-'+d.type;})
+      .html(function(d){return '<div class="node-icon"><i class="'+d.icon+'"></i></div><div class="node-content"><div class="node-title">'+d.label+'</div><div class="node-desc">'+d.sub+'</div></div>';});
+    node.append('circle').attr('cx',-NW/2).attr('cy',0).attr('r',3).attr('fill','var(--text2)');
+    node.append('circle').attr('cx',NW/2).attr('cy',0).attr('r',3).attr('fill','var(--text2)');
+    var bb = g.node().getBBox();
+    var sc = Math.min(W/(bb.width+60), H/(bb.height+60), 1);
+    var tx = (W - bb.width*sc)/2 - bb.x*sc;
+    var ty = (H - bb.height*sc)/2 - bb.y*sc;
+    svg.call(d3.zoom().transform, d3.zoomIdentity.translate(tx,ty).scale(sc));
+  }
+  render();
+  window.addEventListener('resize', render);
+}
+
+var shopifyData = {
+  nodes: [
+    {id:'qs', type:'input',   label:'Query Set',       sub:'1.2k merchant queries',  icon:'fa-solid fa-table',            layer:0, desc:'1,200 curated merchant queries across product-description and Sidekick use cases.'},
+    {id:'pp', type:'input',   label:'Prompt Templates',sub:'Jinja2 versioned',       icon:'fa-solid fa-file-code',        layer:0, desc:'Versioned prompt templates for each Shopify Magic workflow variant.'},
+    {id:'em', type:'infra',   label:'Embedding Model', sub:'text-embed-3',           icon:'fa-solid fa-vector-square',    layer:1, desc:'OpenAI text-embedding-3-small encodes queries for semantic retrieval.'},
+    {id:'kb', type:'process', label:'Knowledge Base',  sub:'Merchant Docs / FAQs',   icon:'fa-solid fa-book',             layer:1, desc:'Shopify merchant documentation, product guides, and help-center FAQs.'},
+    {id:'rag',type:'process', label:'Sidekick RAG',    sub:'Retrieval Agent',        icon:'fa-solid fa-magnifying-glass', layer:2, desc:'Retrieves top-k relevant chunks using cosine similarity over the knowledge base.'},
+    {id:'cc', type:'infra',   label:'Cache Layer',     sub:'Redis under 360ms',      icon:'fa-solid fa-bolt',             layer:2, desc:'In-memory cache serving repeated queries in under 360ms p95 latency.'},
+    {id:'lm', type:'model',   label:'LLM LoRA',        sub:'Fine-tuned checkpoint',  icon:'fa-solid fa-microchip',        layer:3, desc:'LoRA/PEFT fine-tuned LLM checkpoint generating product descriptions and Sidekick answers.'},
+    {id:'gd', type:'infra',   label:'Guardrails',      sub:'Output safety check',    icon:'fa-solid fa-shield',           layer:4, desc:'Output safety and PII filtering before delivery to merchant UI.'},
+    {id:'t1', type:'eval',    label:'Tone Eval',       sub:'Consistency score',      icon:'fa-solid fa-check-double',     layer:5, desc:'Measures tone consistency across checkpoint versions using prompt-based scoring.'},
+    {id:'t2', type:'eval',    label:'Fact Eval',       sub:'Factual accuracy',       icon:'fa-solid fa-scale-balanced',   layer:5, desc:'Checks factual accuracy of generated text against ground-truth product data.'},
+    {id:'t3', type:'eval',    label:'Latency Eval',    sub:'p50 p95 benchmarks',     icon:'fa-solid fa-stopwatch',        layer:5, desc:'Benchmarks p50 and p95 latency. Target: p95 under 360ms post-caching.'},
+    {id:'ds', type:'output',  label:'Dashboard Sync',  sub:'Results to Shopify UI',  icon:'fa-solid fa-chart-line',       layer:6, desc:'Evaluation results pushed to internal dashboard for PM and engineering review.'},
+    {id:'ci', type:'infra',   label:'CI Pipeline',     sub:'Auto regression gate',   icon:'fa-solid fa-code-branch',      layer:6, desc:'Automated regression gate blocks checkpoint promotion if any eval metric degrades.'}
+  ],
+  links: [
+    {source:'qs',target:'em'},{source:'qs',target:'rag'},{source:'pp',target:'rag'},
+    {source:'kb',target:'em'},{source:'em',target:'rag'},
+    {source:'rag',target:'cc'},{source:'rag',target:'lm'},{source:'cc',target:'lm'},
+    {source:'lm',target:'gd'},{source:'gd',target:'t1'},{source:'gd',target:'t2'},{source:'gd',target:'t3'},
+    {source:'t1',target:'ds'},{source:'t2',target:'ds'},{source:'t3',target:'ds'},
+    {source:'t1',target:'ci'},{source:'t2',target:'ci'}
+  ]
+};
+
+var uberData = {
+  nodes: [
+    {id:'rp', type:'input',   label:'Ride Requests',   sub:'gRPC event stream',      icon:'fa-solid fa-car',              layer:0, desc:'Live rider app events streamed via gRPC from mobile clients across regional marketplace workflows.'},
+    {id:'ds2',type:'input',   label:'Driver Status',   sub:'GPS and availability',   icon:'fa-solid fa-location-dot',     layer:0, desc:'Real-time driver location, heading, availability, and vehicle type updates.'},
+    {id:'ep', type:'input',   label:'ETA Signals',     sub:'Maps plus traffic',      icon:'fa-solid fa-road',             layer:0, desc:'Routing engine ETA predictions updated every 30 seconds.'},
+    {id:'kf', type:'infra',   label:'Kafka Topics',    sub:'Event bus',              icon:'fa-solid fa-share-nodes',      layer:1, desc:'High-throughput Kafka topics partitioned by geohash for regional locality.'},
+    {id:'fl', type:'process', label:'Flink Pipeline',  sub:'Near real-time stream',  icon:'fa-solid fa-water',            layer:2, desc:'Apache Flink jobs computing rolling-window demand/supply features with under 5min freshness.'},
+    {id:'hv', type:'process', label:'Hive Batch',      sub:'Daily feature backfill', icon:'fa-solid fa-database',         layer:2, desc:'Overnight Hive jobs computing historical features being migrated to Flink.'},
+    {id:'ps', type:'infra',   label:'Palette Store',   sub:'Uber Feature Store',     icon:'fa-solid fa-cubes',            layer:3, desc:'Uber internal feature store serving low-latency feature vectors to models.'},
+    {id:'fe', type:'process', label:'Feature Engineer',sub:'Demand supply deltas',   icon:'fa-solid fa-sliders',          layer:3, desc:'Feature engineering: driver density, demand surge, historical acceptance rates, time-of-day.'},
+    {id:'xg', type:'model',   label:'XGBoost Ranker',  sub:'Michelangelo platform',  icon:'fa-solid fa-brain',            layer:4, desc:'XGBoost ranking model on Michelangelo scoring driver-ride match quality in under 50ms.'},
+    {id:'ab', type:'eval',    label:'A/B Framework',   sub:'Traffic split',          icon:'fa-solid fa-flask',            layer:5, desc:'Controlled experiment splitting 1 to 5 percent traffic to new model variant for statistical validation.'},
+    {id:'mt', type:'eval',    label:'Metric Tracking', sub:'Accept Cancel ETA',      icon:'fa-solid fa-chart-bar',        layer:5, desc:'Tracks acceptance rate, cancellation rate, and ETA error as primary business guardrails.'},
+    {id:'ga', type:'output',  label:'Guardrail Gate',  sub:'Stat significance check',icon:'fa-solid fa-shield-halved',    layer:6, desc:'Automated promotion gate: requires p-value under 0.05 on all guardrail metrics.'},
+    {id:'dp', type:'output',  label:'Production Deploy',sub:'regional rollout or wider rollout',        icon:'fa-solid fa-rocket',           layer:7, desc:'Phased global rollout via Michelangelo model serving infrastructure.'}
+  ],
+  links: [
+    {source:'rp',target:'kf'},{source:'ds2',target:'kf'},{source:'ep',target:'kf'},
+    {source:'kf',target:'fl'},{source:'kf',target:'hv'},
+    {source:'fl',target:'ps'},{source:'hv',target:'ps'},
+    {source:'ps',target:'fe'},{source:'fe',target:'xg'},
+    {source:'xg',target:'ab'},{source:'ab',target:'mt'},
+    {source:'mt',target:'ga'},{source:'ga',target:'dp'}
+  ]
+};
+
+var proj1Data = {
+  nodes: [
+    {id:'v1',type:'input',  label:'FAISS Index',   sub:'Local vectors',         icon:'fa-solid fa-database',       layer:0, desc:'Local FAISS index with dense embeddings from the document corpus.'},
+    {id:'v2',type:'input',  label:'Pinecone',      sub:'Cloud vector store',    icon:'fa-solid fa-cloud',          layer:0, desc:'Pinecone cloud vector store for scalable similarity search.'},
+    {id:'re',type:'process',label:'Retriever',     sub:'Hybrid rerank',         icon:'fa-solid fa-filter',         layer:1, desc:'Combines BM25 sparse retrieval with dense retrieval and reranks with cross-encoder.'},
+    {id:'e1',type:'eval',   label:'NDCG MRR',      sub:'Retrieval metrics',     icon:'fa-solid fa-calculator',     layer:2, desc:'Normalized DCG and Mean Reciprocal Rank for retrieval quality.'},
+    {id:'lm',type:'model',  label:'LLM Generator', sub:'OpenAI Llama',          icon:'fa-solid fa-robot',          layer:2, desc:'LLM synthesizes final answer from retrieved context chunks.'},
+    {id:'e2',type:'eval',   label:'RAGAS Eval',    sub:'Faithfulness Relevance', icon:'fa-solid fa-shield-halved', layer:3, desc:'RAGAS scores faithfulness grounded in context and answer relevance.'},
+    {id:'dr',type:'output', label:'Drift Monitor', sub:'Rolling window alerts',  icon:'fa-solid fa-bell',          layer:4, desc:'Alerts when faithfulness or relevance drops more than 5 percent vs rolling 7-day baseline.'}
+  ],
+  links: [
+    {source:'v1',target:'re'},{source:'v2',target:'re'},
+    {source:'re',target:'e1'},{source:'re',target:'lm'},
+    {source:'lm',target:'e2'},{source:'e1',target:'dr'},{source:'e2',target:'dr'}
+  ]
+};
+
+var proj2Data = {
+  nodes: [
+    {id:'if',type:'input',  label:'Intake Forms',  sub:'Patient demographics',  icon:'fa-solid fa-file-medical',   layer:0, desc:'Patient demographics, insurance, and clinical acuity from intake forms.'},
+    {id:'ar',type:'process',label:'Agent Router',  sub:'LangChain orchestrator',icon:'fa-solid fa-network-wired',  layer:1, desc:'LangChain multi-agent router directing tasks to appropriate sub-agents.'},
+    {id:'pg',type:'input',  label:'PostgreSQL',    sub:'Insurance records',     icon:'fa-solid fa-server',         layer:2, desc:'Structured patient insurance records and historical care data.'},
+    {id:'fv',type:'input',  label:'FAISS Vector',  sub:'Medical docs',          icon:'fa-solid fa-database',       layer:2, desc:'Unstructured clinical notes and protocols as dense vector embeddings.'},
+    {id:'ml',type:'model',  label:'Matcher LLM',   sub:'OpenAI GPT-4',          icon:'fa-solid fa-user-doctor',    layer:3, desc:'GPT-4 matches patient needs to available caregiver profiles by location and acuity.'},
+    {id:'sd',type:'output', label:'Staff Dashboard',sub:'Review queue UI',      icon:'fa-solid fa-display',        layer:4, desc:'Final caregiver-patient match recommendations surfaced in the staff review dashboard.'}
+  ],
+  links: [
+    {source:'if',target:'ar'},{source:'ar',target:'pg'},{source:'ar',target:'fv'},
+    {source:'pg',target:'ml'},{source:'fv',target:'ml'},{source:'ml',target:'sd'}
+  ]
+};
+
+
+window.addEventListener('load', function() {
+  if (!chartDone) initChart();
+  requestAnimationFrame(function() {
+    setTimeout(function() {
+      drawD3('diagram-shopify', shopifyData);
+      drawD3('diagram-uber', uberData);
+      drawD3('diagram-proj1', proj1Data);
+      drawD3('diagram-proj2', proj2Data);
+    }, 300);
+  });
+});
+
+var mc = document.getElementById('matrix-canvas');
+var mx = mc.getContext('2d');
+function mResize() { mc.width = mc.parentElement.offsetWidth; mc.height = mc.parentElement.offsetHeight; }
+mResize();
+window.addEventListener('resize', mResize);
+var ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+var MFZ = 13;
+var drops = [];
+function mInit() { drops = []; for (var i = 0; i < Math.ceil(mc.width/MFZ); i++) drops.push(1); }
+mInit();
+setInterval(function() {
+  mx.fillStyle = isDark ? 'rgba(10,10,10,0.06)' : 'rgba(247,247,245,0.07)';
+  mx.fillRect(0, 0, mc.width, mc.height);
+  mx.fillStyle = isDark ? '#e50000' : '#c80000';
+  mx.font = MFZ + 'px monospace';
+  for (var i = 0; i < drops.length; i++) {
+    mx.fillText(ALPHA[Math.floor(Math.random()*ALPHA.length)], i*MFZ, drops[i]*MFZ);
+    if (drops[i]*MFZ > mc.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i]++;
+  }
+}, 55);
+</script>
+<!-- SHOPIFY STORY DIALOG -->
+<div id="shopify-dialog" style="display:none;position:fixed;inset:0;z-index:99997;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1.5rem;">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:760px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.6rem;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--red);letter-spacing:0.1em;margin-bottom:0.2rem;">// SHOPIFY MAGIC</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:600;color:var(--text);">The full story behind the work</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <div style="display:flex;gap:6px;align-items:center;">
+          <div id="sdot1" style="width:7px;height:7px;border-radius:50%;background:var(--text2);transition:background 0.3s;"></div>
+          <div id="sdot2" style="width:7px;height:7px;border-radius:50%;background:var(--text2);transition:background 0.3s;"></div>
+          <div id="sdot3" style="width:7px;height:7px;border-radius:50%;background:var(--text2);transition:background 0.3s;"></div>
+        </div>
+        <button onclick="closeShopifyDialog()" style="width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">&#x2715;</button>
+      </div>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:1.4rem 1.6rem;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--red);letter-spacing:0.1em;margin-bottom:0.75rem;">The 3 key things I did</div>
+      <div style="display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.2rem;">
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;">
+          <div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div>
+          <div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">Built a 1,200-query evaluation test set</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Structured dataset covering product-description and Sidekick use cases — diverse enough to catch regressions, not just average performance.</div></div>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;">
+          <div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div>
+          <div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">Reduced p95 latency by 25%</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Implemented async serving with Redis response caching, dropping response time from 480ms to 360ms at the 95th percentile.</div></div>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;">
+          <div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</div>
+          <div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">Supported structured regression checks for release-readiness reviews</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Checkpoint comparisons were reviewed against tone, factual accuracy, grounding, and latency signals before release-readiness decisions.</div></div>
+        </div>
+      </div>
+      <button id="s-expand-story" onclick="shopifyExpandStory()" style="width:100%;padding:0.6rem;border:1px dashed var(--red);border-radius:8px;background:transparent;color:var(--red);font-family:'JetBrains Mono',monospace;font-size:0.75rem;cursor:pointer;margin-bottom:0.5rem;">&#x2193; &nbsp;Read the full story — how it all connected</button>
+      <div id="s-full-story" style="display:none;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--red);letter-spacing:0.1em;margin-bottom:0.75rem;margin-top:0.5rem;padding-top:0.75rem;border-top:1px solid var(--border);">The full story — 6 chapters</div>
+        <div style="display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.2rem;">
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;"><div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div><div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">The problem</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Shopify Magic was generating product descriptions using a fine-tuned LLM — but nobody had a rigorous way to know if a new checkpoint was actually better or worse than the last one.</div></div></div>
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;"><div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div><div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">Building the test set</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">I built 1,200 real merchant queries covering product-description and Sidekick use cases — diverse enough to catch regressions across categories, not just average performance.</div></div></div>
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;"><div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</div><div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">The RAG pipeline</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Each query passed through a retrieval agent pulling relevant merchant docs, combined with a Redis cache layer serving repeated patterns in under 360ms — cutting unnecessary LLM calls entirely.</div></div></div>
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;"><div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">4</div><div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">Three-track evaluation</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Every model output ran through three independent tracks: tone consistency, factual accuracy, and latency benchmarking at p50 and p95.</div></div></div>
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;"><div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">5</div><div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">The safety gate</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Results fed into a CI regression gate — if any eval metric degraded, the new model was automatically blocked from promotion. This reduced reliance on repeated manual review and made regressions easier to identify.</div></div></div>
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;"><div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">6</div><div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">The result</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">p95 latency dropped from 480ms to 360ms — a 25% improvement. Model releases became provably safer and the evaluation workflow helped make model and prompt-version comparisons more consistent during release-readiness reviews.</div></div></div>
+        </div>
+        <button id="s-expand-flow" onclick="shopifyExpandFlow()" style="width:100%;padding:0.6rem;border:1px dashed var(--red);border-radius:8px;background:transparent;color:var(--red);font-family:'JetBrains Mono',monospace;font-size:0.75rem;cursor:pointer;margin-bottom:0.5rem;">&#x2193; &nbsp;Show me the full system as a visual pipeline</button>
+        <div id="s-flow-section" style="display:none;padding-top:0.75rem;border-top:1px solid var(--border);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--red);letter-spacing:0.1em;margin-bottom:0.75rem;">System pipeline</div>
+
+          <!-- Lane visual -->
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:1rem;font-family:'JetBrains Mono',monospace;font-size:11px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;text-align:right;color:var(--text2);font-size:9px;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;">INPUT</span>
+              <span style="background:#E6F1FB;color:#0C447C;border:0.5px solid #85B7EB;border-radius:6px;padding:3px 10px;white-space:nowrap;">Merchant prompt</span>
+              <span style="color:var(--text2);">+</span>
+              <span style="background:#E6F1FB;color:#0C447C;border:0.5px solid #85B7EB;border-radius:6px;padding:3px 10px;white-space:nowrap;">Knowledge base</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;text-align:right;color:var(--text2);font-size:9px;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;">RETRIEVE</span>
+              <span style="background:#E1F5EE;color:#085041;border:0.5px solid #5DCAA5;border-radius:6px;padding:3px 10px;white-space:nowrap;">Embedding model</span>
+              <span style="color:var(--text2);">&#x2192;</span>
+              <span style="background:#E1F5EE;color:#085041;border:0.5px solid #5DCAA5;border-radius:6px;padding:3px 10px;white-space:nowrap;">Sidekick RAG</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;text-align:right;color:var(--text2);font-size:9px;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;">GENERATE</span>
+              <span style="background:#FAEEDA;color:#633806;border:0.5px solid #EF9F27;border-radius:6px;padding:3px 10px;white-space:nowrap;">Redis cache</span>
+              <span style="color:var(--text2);">/</span>
+              <span style="background:#FCEBEB;color:#791F1F;border:0.5px solid #F09595;border-radius:6px;padding:3px 10px;white-space:nowrap;">LLM LoRA</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;text-align:right;color:var(--text2);font-size:9px;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;">GUARD</span>
+              <span style="background:#FAEEDA;color:#633806;border:0.5px solid #EF9F27;border-radius:6px;padding:3px 10px;white-space:nowrap;">Output guardrails</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <span style="width:64px;text-align:right;color:var(--text2);font-size:9px;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;">EVALUATE</span>
+              <span style="background:#EEEDFE;color:#3C3489;border:0.5px solid #AFA9EC;border-radius:6px;padding:3px 10px;white-space:nowrap;">Tone eval</span>
+              <span style="color:var(--text2);">&#x2192;</span>
+              <span style="background:#EEEDFE;color:#3C3489;border:0.5px solid #AFA9EC;border-radius:6px;padding:3px 10px;white-space:nowrap;">Fact eval</span>
+              <span style="color:var(--text2);">&#x2192;</span>
+              <span style="background:#EEEDFE;color:#3C3489;border:0.5px solid #AFA9EC;border-radius:6px;padding:3px 10px;white-space:nowrap;">Latency eval</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;text-align:right;color:var(--text2);font-size:9px;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;">SHIP</span>
+              <span style="background:#EAF3DE;color:#27500A;border:0.5px solid #97C459;border-radius:6px;padding:3px 10px;white-space:nowrap;">Dashboard sync</span>
+              <span style="color:var(--text2);">+</span>
+              <span style="background:#EAF3DE;color:#27500A;border:0.5px solid #97C459;border-radius:6px;padding:3px 10px;white-space:nowrap;">CI gate</span>
+            </div>
+          </div>
+
+          <div class="diagram-legend">
+            <div class="legend-items">
+              <span class="legend-item"><span class="dot" style="background:#1a73e8"></span>Input</span>
+              <span class="legend-item"><span class="dot" style="background:#f59e0b"></span>Processing</span>
+              <span class="legend-item"><span class="dot" style="background:#e50000"></span>Model</span>
+              <span class="legend-item"><span class="dot" style="background:#10b981"></span>Output</span>
+              <span class="legend-item"><span class="dot" style="background:#8b5cf6"></span>Eval</span>
+              <span class="legend-item"><span class="dot" style="background:#06b6d4"></span>Infra</span>
+            </div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;">scroll to zoom &middot; click node to trace</span>
+          </div>
+          <div class="diagram-container" id="diagram-shopify-dialog" style="height:460px;min-height:460px;margin-top:0.5rem;"></div>
+          <div style="margin-top:0.75rem;font-size:0.75rem;color:var(--text2);font-family:'JetBrains Mono',monospace;text-align:center;">25% latency reduction &middot; 1,200 queries evaluated &middot; automated quality gating</div>
+        </div>
+      </div>
+    </div>
     
-    <button class="mobile-menu-toggle" aria-label="Menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+  </div>
+</div>
+
+<!-- UBER STORY DIALOG -->
+<div id="uber-dialog" style="display:none;position:fixed;inset:0;z-index:99997;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1.5rem;">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:760px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.6rem;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--red);letter-spacing:0.1em;margin-bottom:0.2rem;">// UBER DRIVER MATCHING</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:600;color:var(--text);">The full story behind the work</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <div style="display:flex;gap:6px;align-items:center;">
+          <div id="udot1" style="width:7px;height:7px;border-radius:50%;background:var(--text2);transition:background 0.3s;"></div>
+          <div id="udot2" style="width:7px;height:7px;border-radius:50%;background:var(--text2);transition:background 0.3s;"></div>
+          <div id="udot3" style="width:7px;height:7px;border-radius:50%;background:var(--text2);transition:background 0.3s;"></div>
+        </div>
+        <button onclick="closeUberDialog()" style="width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">&#x2715;</button>
+      </div>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:1.4rem 1.6rem;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--red);letter-spacing:0.1em;margin-bottom:0.75rem;">The 3 key things I did</div>
+      <div style="display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.2rem;">
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;">
+          <div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div>
+          <div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">Contributed to XGBoost driver-matching model</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Built on Michelangelo — Uber's internal ML platform — scoring driver-rider pairs in under 50ms at global scale across millions of daily matches.</div></div>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;">
+          <div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div>
+          <div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">Migrated features from Hive batch to Flink streaming</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Reduced feature freshness lag from hours to under 5 minutes — the model finally saw real-world conditions as they actually were.</div></div>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;">
+          <div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</div>
+          <div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">Ran A/B experiments with guardrail metrics</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Every model update validated against acceptance rate, cancellation rate, and ETA error. If any degraded, the new model did not ship.</div></div>
+        </div>
+      </div>
+      <button id="u-expand-story" onclick="uberExpandStory()" style="width:100%;padding:0.6rem;border:1px dashed var(--red);border-radius:8px;background:transparent;color:var(--red);font-family:'JetBrains Mono',monospace;font-size:0.75rem;cursor:pointer;margin-bottom:0.5rem;">&#x2193; &nbsp;Read the full story — how it all connected</button>
+      <div id="u-full-story" style="display:none;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--red);letter-spacing:0.1em;margin-bottom:0.75rem;margin-top:0.5rem;padding-top:0.75rem;border-top:1px solid var(--border);">The full story — 6 chapters</div>
+        <div style="display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.2rem;">
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;"><div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div><div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">The scale</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Every second, millions of riders and drivers send signals — location pings, trip requests, ETA estimates. The challenge: scoring driver-rider pairs using proximity, acceptance-history, and trip-context signals in high-volume marketplace workflows.</div></div></div>
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;"><div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div><div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">The ranking model</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">I contributed to an XGBoost driver-matching ranking model on Michelangelo. It scored every possible driver-rider pair and surfaced the best match based on dozens of real-time features.</div></div></div>
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;"><div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</div><div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">The data freshness problem</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Features like driver density and demand surge were computed overnight in Hive batch jobs — meaning the model sometimes worked with data hours old. In a live marketplace, that is a real problem.</div></div></div>
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;"><div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">4</div><div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">The Flink migration</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">I helped migrate demand and supply features from overnight Hive jobs to near-real-time Apache Flink streaming pipelines. Feature freshness went from hours of lag to under 5 minutes.</div></div></div>
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;"><div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">5</div><div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">Proving it worked safely</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Ranking-model updates were evaluated through A/B experiments and guardrail tracking. We tracked acceptance rate, cancellation rate, and ETA error as guardrails. If any degraded, it did not ship.</div></div></div>
+          <div style="display:flex;gap:0.8rem;align-items:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;"><div style="min-width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:0.65rem;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">6</div><div><div style="font-weight:600;font-size:0.88rem;margin-bottom:2px;">The outcome</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6;">Fresher features meant better matches. The pipeline that once took hours now responded in minutes — improving match accuracy across millions of daily rides.</div></div></div>
+        </div>
+        <button id="u-expand-flow" onclick="uberExpandFlow()" style="width:100%;padding:0.6rem;border:1px dashed var(--red);border-radius:8px;background:transparent;color:var(--red);font-family:'JetBrains Mono',monospace;font-size:0.75rem;cursor:pointer;margin-bottom:0.5rem;">&#x2193; &nbsp;Show me the full system as a visual pipeline</button>
+        <div id="u-flow-section" style="display:none;padding-top:0.75rem;border-top:1px solid var(--border);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--red);letter-spacing:0.1em;margin-bottom:0.75rem;">System pipeline</div>
+
+          <!-- Lane visual -->
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:1rem;font-family:'JetBrains Mono',monospace;font-size:11px;">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <span style="width:64px;text-align:right;color:var(--text2);font-size:9px;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;">INGEST</span>
+              <span style="background:#E6F1FB;color:#0C447C;border:0.5px solid #85B7EB;border-radius:6px;padding:3px 10px;white-space:nowrap;">Ride requests</span>
+              <span style="color:var(--text2);">+</span>
+              <span style="background:#E6F1FB;color:#0C447C;border:0.5px solid #85B7EB;border-radius:6px;padding:3px 10px;white-space:nowrap;">Driver status</span>
+              <span style="color:var(--text2);">+</span>
+              <span style="background:#E6F1FB;color:#0C447C;border:0.5px solid #85B7EB;border-radius:6px;padding:3px 10px;white-space:nowrap;">ETA signals</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;text-align:right;color:var(--text2);font-size:9px;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;">STREAM</span>
+              <span style="background:#E1F5EE;color:#085041;border:0.5px solid #5DCAA5;border-radius:6px;padding:3px 10px;white-space:nowrap;">Kafka event bus</span>
+              <span style="color:var(--text2);">&#x2192;</span>
+              <span style="background:#E1F5EE;color:#085041;border:0.5px solid #5DCAA5;border-radius:6px;padding:3px 10px;white-space:nowrap;">Flink streaming</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;text-align:right;color:var(--text2);font-size:9px;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;">FEATURES</span>
+              <span style="background:#FAEEDA;color:#633806;border:0.5px solid #EF9F27;border-radius:6px;padding:3px 10px;white-space:nowrap;">Palette feature store</span>
+              <span style="color:var(--text2);">&#x2192;</span>
+              <span style="background:#FAEEDA;color:#633806;border:0.5px solid #EF9F27;border-radius:6px;padding:3px 10px;white-space:nowrap;">Feature engineering</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;text-align:right;color:var(--text2);font-size:9px;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;">MODEL</span>
+              <span style="background:#FCEBEB;color:#791F1F;border:0.5px solid #F09595;border-radius:6px;padding:3px 10px;white-space:nowrap;">XGBoost ranker</span>
+              <span style="color:var(--text2);font-size:9px;">Michelangelo · &lt;50ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;text-align:right;color:var(--text2);font-size:9px;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;">VALIDATE</span>
+              <span style="background:#EEEDFE;color:#3C3489;border:0.5px solid #AFA9EC;border-radius:6px;padding:3px 10px;white-space:nowrap;">A/B experiment</span>
+              <span style="color:var(--text2);">&#x2192;</span>
+              <span style="background:#EEEDFE;color:#3C3489;border:0.5px solid #AFA9EC;border-radius:6px;padding:3px 10px;white-space:nowrap;">Metric tracking</span>
+              <span style="color:var(--text2);">&#x2192;</span>
+              <span style="background:#EEEDFE;color:#3C3489;border:0.5px solid #AFA9EC;border-radius:6px;padding:3px 10px;white-space:nowrap;">Guardrail gate</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;text-align:right;color:var(--text2);font-size:9px;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;">DEPLOY</span>
+              <span style="background:#EAF3DE;color:#27500A;border:0.5px solid #97C459;border-radius:6px;padding:3px 10px;white-space:nowrap;">Global rollout</span>
+              <span style="color:var(--text2);font-size:9px;">Michelangelo serving</span>
+            </div>
+          </div>
+
+          <div class="diagram-legend">
+            <div class="legend-items">
+              <span class="legend-item"><span class="dot" style="background:#1a73e8"></span>Input</span>
+              <span class="legend-item"><span class="dot" style="background:#f59e0b"></span>Processing</span>
+              <span class="legend-item"><span class="dot" style="background:#e50000"></span>Model</span>
+              <span class="legend-item"><span class="dot" style="background:#10b981"></span>Output</span>
+              <span class="legend-item"><span class="dot" style="background:#8b5cf6"></span>Eval</span>
+              <span class="legend-item"><span class="dot" style="background:#06b6d4"></span>Infra</span>
+            </div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;">scroll to zoom &middot; click node to trace</span>
+          </div>
+          <div class="diagram-container" id="diagram-uber-dialog" style="height:460px;min-height:460px;margin-top:0.5rem;"></div>
+          <div style="margin-top:0.75rem;font-size:0.75rem;color:var(--text2);font-family:'JetBrains Mono',monospace;text-align:center;">feature lag hours to 5 min &middot; millions of matches daily &middot; safer model rollouts</div>
+        </div>
+      </div>
+    </div>
     
-    <nav class="nav-menu">
-      <a href="#" onclick="showSection('home')">Home</a>
-      <a href="#" onclick="showSection('experience')">Experience</a>
-      <a href="#" onclick="showSection('projects')">Projects</a>
-      <a href="#" onclick="showSection('skills')">Skills</a>
-      <a href="#" onclick="showSection('about')">About</a>
-      <a href="https://www.linkedin.com/in/dinesh-kumar-pathakoti-3469901a3/" target="_blank"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn"></a>
-      <a href="https://github.com/DINESH200029" target="_blank"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/733/733553.png" alt="GitHub"></a>
-      <button id="toggleMode" title="Toggle dark mode" class="mode-toggle">
-        Dark Mode: Off
-      </button>
-    </nav>
-  </header>
+  </div>
+</div>
 
-  <section id="home" class="hero section">
-    <h1>Hi there, I'm <span class="highlight">Dinesh Kumar Pathakoti</span> 👋</h1>
-    <p class="hero-text">
-      <span class="bold">Data Engineer</span> passionate about Data, ETL Systems, Cloud Architecture, and Scalable Pipelines.<br />
-      Previously contributed in <span class="bold">💸 TCS</span>, <span class="bold">🎓 Cal State East Bay</span>, and <span class="bold">🧠 ML Research Projects</span>.
-    </p>
-    <div class="hero-buttons">
-      <a href="#experience" class="btn-link">
-        <button class="btn-primary">
-          My Work →
-        </button>
-      </a>
-      <a href="https://www.linkedin.com/in/dinesh-kumar-pathakoti-3469901a3/" target="_blank" class="btn-link">
-        <button class="btn-secondary">
-          Let's Connect →
-        </button>
-      </a>
+<script>
+var sDialogD3Drawn = false;
+function openShopifyDialog() {
+  document.getElementById('shopify-dialog').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  document.getElementById('sdot1').style.background = 'var(--red)';
+  document.getElementById('sdot2').style.background = 'var(--text2)';
+  document.getElementById('sdot3').style.background = 'var(--text2)';
+}
+function closeShopifyDialog() {
+  document.getElementById('shopify-dialog').style.display = 'none';
+  document.body.style.overflow = '';
+  document.getElementById('s-full-story').style.display = 'none';
+  document.getElementById('s-flow-section').style.display = 'none';
+  document.getElementById('s-expand-story').style.display = 'block';
+  document.getElementById('s-expand-flow').style.display = 'block';
+  document.getElementById('sdot1').style.background = 'var(--text2)';
+  document.getElementById('sdot2').style.background = 'var(--text2)';
+  document.getElementById('sdot3').style.background = 'var(--text2)';
+  sDialogD3Drawn = false;
+}
+function shopifyExpandStory() {
+  document.getElementById('s-full-story').style.display = 'block';
+  document.getElementById('s-expand-story').style.display = 'none';
+  document.getElementById('sdot2').style.background = 'var(--red)';
+  document.getElementById('s-full-story').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function shopifyExpandFlow() {
+  document.getElementById('s-flow-section').style.display = 'block';
+  document.getElementById('s-expand-flow').style.display = 'none';
+  document.getElementById('sdot3').style.background = 'var(--red)';
+  if (!sDialogD3Drawn) {
+    sDialogD3Drawn = true;
+    setTimeout(function() { drawD3('diagram-shopify-dialog', shopifyData); }, 150);
+  }
+  document.getElementById('s-flow-section').scrollIntoView({behavior:'smooth',block:'start'});
+}
+document.getElementById('shopify-dialog').addEventListener('click', function(e) {
+  if (e.target === this) closeShopifyDialog();
+});
+
+var uDialogD3Drawn = false;
+function openUberDialog() {
+  document.getElementById('uber-dialog').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  document.getElementById('udot1').style.background = 'var(--red)';
+  document.getElementById('udot2').style.background = 'var(--text2)';
+  document.getElementById('udot3').style.background = 'var(--text2)';
+}
+function closeUberDialog() {
+  document.getElementById('uber-dialog').style.display = 'none';
+  document.body.style.overflow = '';
+  document.getElementById('u-full-story').style.display = 'none';
+  document.getElementById('u-flow-section').style.display = 'none';
+  document.getElementById('u-expand-story').style.display = 'block';
+  document.getElementById('u-expand-flow').style.display = 'block';
+  document.getElementById('udot1').style.background = 'var(--text2)';
+  document.getElementById('udot2').style.background = 'var(--text2)';
+  document.getElementById('udot3').style.background = 'var(--text2)';
+  uDialogD3Drawn = false;
+}
+function uberExpandStory() {
+  document.getElementById('u-full-story').style.display = 'block';
+  document.getElementById('u-expand-story').style.display = 'none';
+  document.getElementById('udot2').style.background = 'var(--red)';
+  document.getElementById('u-full-story').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function uberExpandFlow() {
+  document.getElementById('u-flow-section').style.display = 'block';
+  document.getElementById('u-expand-flow').style.display = 'none';
+  document.getElementById('udot3').style.background = 'var(--red)';
+  if (!uDialogD3Drawn) {
+    uDialogD3Drawn = true;
+    setTimeout(function() { drawD3('diagram-uber-dialog', uberData); }, 150);
+  }
+  document.getElementById('u-flow-section').scrollIntoView({behavior:'smooth',block:'start'});
+}
+document.getElementById('uber-dialog').addEventListener('click', function(e) {
+  if (e.target === this) closeUberDialog();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeShopifyDialog();
+    closeUberDialog();
+    closeShopifyModal();
+    closeUberModal();
+  }
+});
+</script>
+<!-- SHOPIFY MODAL -->
+<div id="shopify-modal" style="display:none;position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1.5rem;">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:860px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.6rem;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--red);letter-spacing:0.1em;margin-bottom:0.2rem;">// SHOPIFY MAGIC</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:600;color:var(--text);">End-to-end evaluation pipeline</div>
+      </div>
+      <button onclick="closeShopifyModal()" style="width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">&#x2715;</button>
     </div>
-  </section>
-
-  <section id="experience" class="section">
-    <h2>Experience 💼</h2>
-    <div class="card-container">
-      <div class="experience-card">
-        <div class="card-image-container">
-          <img src="/csueblogo.jpg" alt="Cal State East Bay" class="card-image">
-        </div>
-        <h3>Graduate Assistant</h3>
-        <p class="card-meta">California State University, East Bay · Feb 2024 – Present</p>
-        <p class="card-description">Built interactive dashboards for staffing, budgeting, and space utilization using Tableau. Ensured 100% data accuracy by integrating validated spreadsheet data and improved reporting time by 20%.</p>
+    <div style="padding:0.75rem 1.6rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;flex-wrap:wrap;gap:0.5rem;">
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <span style="display:flex;align-items:center;gap:0.35rem;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);"><span style="width:7px;height:7px;border-radius:50%;background:#1a73e8;display:inline-block;"></span>Input</span>
+        <span style="display:flex;align-items:center;gap:0.35rem;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);"><span style="width:7px;height:7px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>Processing</span>
+        <span style="display:flex;align-items:center;gap:0.35rem;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);"><span style="width:7px;height:7px;border-radius:50%;background:#e50000;display:inline-block;"></span>Model</span>
+        <span style="display:flex;align-items:center;gap:0.35rem;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);"><span style="width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;"></span>Output</span>
+        <span style="display:flex;align-items:center;gap:0.35rem;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);"><span style="width:7px;height:7px;border-radius:50%;background:#8b5cf6;display:inline-block;"></span>Eval</span>
+        <span style="display:flex;align-items:center;gap:0.35rem;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);"><span style="width:7px;height:7px;border-radius:50%;background:#06b6d4;display:inline-block;"></span>Infra</span>
       </div>
-
-      <div class="experience-card">
-        <div class="card-image-container">
-          <img src="/tcslogo.jpg" alt="TCS" class="card-image">
-        </div>
-        <h3>Data Engineer</h3>
-        <p class="card-meta">Tata Consultancy Services · Dec 2021 – Aug 2023</p>
-        <p class="card-description">Engineered scalable data pipelines for Citi Bank using Ab Initio and Teradata. Led server migration projects, optimized query performance, and automated workflows using Autosys and Unix scripting.</p>
-      </div>
-
-      <div class="experience-card">
-        <div class="card-image-container">
-          <img src="/tcslogo.jpg" alt="TCS" class="card-image">
-        </div>
-        <h3>Data Engineer Trainee</h3>
-        <p class="card-meta">Tata Consultancy Services · Aug 2021 – Nov 2023</p>
-        <p class="card-description">Contributed to high-quality ETL delivery by testing Ab Initio graphs in SIT/UAT and resolving incidents through ServiceNow, enhancing code management and support workflows.</p>
-      </div>
-
-      <div class="experience-card">
-        <div class="card-image-container">
-          <img src="/cantileverlogo.jpg" alt="TCS" class="card-image">
-        </div>
-        <h3>Software Engineer Intern</h3>
-        <p class="card-meta">Cantilever Labs · Feb 2020 – Apr 2020</p>
-        <p class="card-description">Developed a doctor appointment scheduling system with user-friendly portals, reducing wait times and enabling seamless appointment booking and management for both doctors and patients.</p>
-      </div>
+      <span style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);">scroll to zoom &middot; click node to trace</span>
     </div>
-  </section>
-
-  <section id="projects" class="section" style="display:none;">
-    <h2>Projects 🛠️</h2>
-    <div class="card-container">
-      <div class="project-card">
-        <div class="card-image-container">
-          <img src="/project1.jpg" alt="ML Project" class="card-image">
-        </div>
-        <h3>ML Approach for Detecting Pepper Crop Diseases</h3>
-        <p class="card-description">Built a machine learning model for detecting pepper crop diseases with 95% accuracy, leveraging image segmentation and optimized feature extraction to reduce classification errors by 15%.</p>
-      </div>
-
-      <div class="project-card">
-        <div class="card-image-container">
-          <img src="/project2.jpg" alt="Virtual Mouse" class="card-image">
-        </div>
-        <h3>Virtual Mouse with Hand Gestures using OpenCV</h3>
-        <p class="card-description">Developed a real-time computer vision system for controlling the mouse cursor using webcam-based hand gesture recognition, achieving 80% detection accuracy with Python and OpenCV.</p>
-      </div>
+    <div style="flex:1;overflow:auto;padding:1rem 1.6rem;">
+      <div class="diagram-container" id="diagram-shopify-modal" style="height:520px;min-height:520px;"></div>
     </div>
-  </section>
-
-  <section id="skills" class="section skills-section">
-    <h2 class="skills-title">My Skills 🧠</h2>
-  
-    <div class="skills-container">
-      <div class="skill-card">
-        <img src="https://img.icons8.com/color/48/code.png" alt="Code" class="skill-icon">
-        <h3>Programming & Development</h3>
-        <p>Skilled in Python, Java, C, C++, SQL, and scripting. Experienced in HTML, CSS, and JavaScript to build functional, dynamic applications.</p>
-      </div>
-  
-      <div class="skill-card">
-        <img src="https://img.icons8.com/color/48/database.png" alt="Database" class="skill-icon">
-        <h3>Data Engineering & ETL</h3>
-        <p>Experience building pipelines with Ab Initio, Autosys, and Teradata. Delivered insights via Tableau, Power BI, and Excel dashboards.</p>
-      </div>
-  
-      <div class="skill-card">
-        <img src="https://img.icons8.com/color/48/cloud.png" alt="Cloud" class="skill-icon">
-        <h3>Cloud & Big Data</h3>
-        <p>Hands-on with AWS (EC2, Lambda, S3, VPC), Hadoop, and Apache Spark to process and manage large-scale datasets in cloud environments.</p>
-      </div>
-  
-      <div class="skill-card">
-        <img src="https://img.icons8.com/color/48/artificial-intelligence.png" alt="AI" class="skill-icon">
-        <h3>ML & Analytics</h3>
-        <p>Built machine learning and computer vision solutions using NumPy, Pandas, OpenCV, and Matplotlib for real-time applications.</p>
-      </div>
-  
-      <div class="skill-card">
-        <img src="https://img.icons8.com/color/48/settings.png" alt="Tools" class="skill-icon">
-        <h3>Tools & Environment</h3>
-        <p>Proficient in Visual Studio, Eclipse, and Ab Initio GDE. Experienced with service tools like ServiceNow for workflow automation.</p>
-      </div>
+    <div style="padding:0.9rem 1.6rem;border-top:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;">
+      <span style="font-size:0.78rem;color:var(--text2);font-family:'JetBrains Mono',monospace;">25% latency reduction &middot; 1,200 queries evaluated &middot; automated quality gating</span>
+      <button onclick="closeShopifyModal()" style="padding:0.5rem 1.2rem;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:0.8rem;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">close &times;</button>
     </div>
-  </section>
+  </div>
+</div>
 
-  <section id="about" class="section about-section">
-    <h2>I'm Dinesh Kumar Pathakoti 👨🏼‍🎓</h2>
-    
-    <p class="about-text">
-      I'm a <strong>Data Engineer</strong> who enjoys solving complex problems and building scalable data systems using a mix of <strong>ETL development, cloud infrastructure, and machine learning</strong>. With professional experience in the <strong>banking</strong> and <strong>higher education</strong> industries, I've learned that good engineering isn't just about code—it's about impact, collaboration, and curiosity.
-    </p>
-  
-    <p class="about-text">
-      Currently pursuing my <strong>Master's in Computer Science</strong> at California State University, East Bay, I've worked on everything from <strong>AI-powered image processing</strong> to <strong>real-time gesture tracking systems</strong>. Whether I'm optimizing <strong>data pipelines at Citi Bank</strong> or visualizing space usage in Tableau, I aim to make every solution <strong>performant, insightful, and user-driven</strong>.
-    </p>
-  </section>
+<!-- UBER MODAL -->
+<div id="uber-modal" style="display:none;position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1.5rem;">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:860px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.3);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.6rem;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--red);letter-spacing:0.1em;margin-bottom:0.2rem;">// UBER DRIVER MATCHING</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:600;color:var(--text);">End-to-end ML ranking pipeline</div>
+      </div>
+      <button onclick="closeUberModal()" style="width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">&#x2715;</button>
+    </div>
+    <div style="padding:0.75rem 1.6rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;flex-wrap:wrap;gap:0.5rem;">
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <span style="display:flex;align-items:center;gap:0.35rem;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);"><span style="width:7px;height:7px;border-radius:50%;background:#1a73e8;display:inline-block;"></span>Input</span>
+        <span style="display:flex;align-items:center;gap:0.35rem;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);"><span style="width:7px;height:7px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>Processing</span>
+        <span style="display:flex;align-items:center;gap:0.35rem;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);"><span style="width:7px;height:7px;border-radius:50%;background:#e50000;display:inline-block;"></span>Model</span>
+        <span style="display:flex;align-items:center;gap:0.35rem;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);"><span style="width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;"></span>Output</span>
+        <span style="display:flex;align-items:center;gap:0.35rem;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);"><span style="width:7px;height:7px;border-radius:50%;background:#8b5cf6;display:inline-block;"></span>Eval</span>
+        <span style="display:flex;align-items:center;gap:0.35rem;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);"><span style="width:7px;height:7px;border-radius:50%;background:#06b6d4;display:inline-block;"></span>Infra</span>
+      </div>
+      <span style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text2);">scroll to zoom &middot; click node to trace</span>
+    </div>
+    <div style="flex:1;overflow:auto;padding:1rem 1.6rem;">
+      <div class="diagram-container" id="diagram-uber-modal" style="height:520px;min-height:520px;"></div>
+    </div>
+    <div style="padding:0.9rem 1.6rem;border-top:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;">
+      <span style="font-size:0.78rem;color:var(--text2);font-family:'JetBrains Mono',monospace;">feature lag hours to 5 min &middot; millions of matches daily &middot; safer rollouts</span>
+      <button onclick="closeUberModal()" style="padding:0.5rem 1.2rem;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:0.8rem;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">close &times;</button>
+    </div>
+  </div>
+</div>
 
-  <script src="script.js"></script>
+<script>
+var shopifyModalDrawn = false;
+function openShopifyModal() {
+  var m = document.getElementById('shopify-modal');
+  m.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  if (!shopifyModalDrawn) {
+    shopifyModalDrawn = true;
+    setTimeout(function() { drawD3('diagram-shopify-modal', shopifyData); }, 150);
+  }
+}
+function closeShopifyModal() {
+  document.getElementById('shopify-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('shopify-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeShopifyModal();
+});
+
+var uberModalDrawn = false;
+function openUberModal() {
+  var m = document.getElementById('uber-modal');
+  m.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  if (!uberModalDrawn) {
+    uberModalDrawn = true;
+    setTimeout(function() { drawD3('diagram-uber-modal', uberData); }, 150);
+  }
+}
+function closeUberModal() {
+  document.getElementById('uber-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('uber-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeUberModal();
+});
+</script>
+<div id="visit-badge" style="
+  position:fixed; bottom:1.5rem; right:0.5rem; z-index:9997;
+  font-family:'JetBrains Mono',monospace;
+  opacity:0; transform:translateY(20px);
+  transition:opacity 0.5s,transform 0.5s;
+">
+  <!-- Collapsed pill -->
+  <div id="badge-pill" onclick="expandBadge()" style="
+    display:flex; align-items:center; gap:10px;
+    background:var(--card); border:1px solid var(--border);
+    border-radius:50px; padding:10px 16px 10px 10px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.12);
+    cursor:pointer; transition:background 0.3s,border 0.3s,transform 0.2s;
+  " onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+    <div style="width:38px;height:38px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <i class="fa-solid fa-clock" style="color:#fff;font-size:15px;"></i>
+    </div>
+    <div>
+      <div style="font-size:8px;color:var(--text2);letter-spacing:0.08em;text-transform:uppercase;">Time On site</div>
+      <div style="font-size:11px;font-weight:700;color:var(--text);letter-spacing:0.05em;" id="visit-timer">00:00</div>
+    </div>
+  </div>
+
+  <!-- Expanded card -->
+  <div id="badge-expanded" style="
+    display:none;
+    background:var(--card); border:1px solid var(--border);
+    border-radius:16px; padding:1.4rem 1.4rem 1.2rem;
+    box-shadow:0 8px 32px rgba(0,0,0,0.18);
+    width:260px; text-align:center;
+    transition:background 0.3s,border 0.3s;
+    animation:badgePop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  ">
+    <button onclick="collapseBadge()" style="
+    position:absolute;top:10px;right:12px;
+    background:transparent;border:none;cursor:pointer;
+    color:var(--text2);font-size:1rem;line-height:1;
+  ">&#x2715;</button>
+
+<div style="position:relative;width:48px;height:48px;margin:0 auto 0.9rem;" id="heart-btn" onclick="floatHeart()">
+  <div style="width:48px;height:48px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 0.15s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <i class="fa-solid fa-heart" style="color:#fff;font-size:18px;"></i>
+  </div>
+</div>
+
+    <div style="font-size:11px;color:var(--text2);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.3rem;">You have been here for</div>
+    <div style="font-size:2rem;font-weight:700;color:var(--red);letter-spacing:0.05em;margin-bottom:0.9rem;" id="visit-timer-big">00:00</div>
+
+    <div style="font-size:0.72rem;color:var(--text2);line-height:1.7;margin-bottom:1rem;">
+      That means a lot.<br>
+      <span style="color:var(--red);font-weight:400;">Thank you for taking the time</span><br>
+    </div>
+
+    <div style="font-size:9px;color:var(--text2);letter-spacing:0.08em;border-top:1px solid var(--border);padding-top:0.75rem;">
+      &mdash; DK 😄
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes badgePop {
+  from { opacity:0; transform:scale(0.85) translateY(10px); }
+  to   { opacity:1; transform:scale(1)    translateY(0);    }
+}
+</style>
+
+<script>
+var visitStart = Date.now();
+var badge = document.getElementById('visit-badge');
+var timerEl = document.getElementById('visit-timer');
+var timerBig = document.getElementById('visit-timer-big');
+
+setTimeout(function() {
+  badge.style.opacity = '1';
+  badge.style.transform = 'translateY(0)';
+}, 2000);
+
+setInterval(function() {
+  var elapsed = Math.floor((Date.now() - visitStart) / 1000);
+  var m = Math.floor(elapsed / 60);
+  var s = elapsed % 60;
+  var t = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  timerEl.textContent = t;
+  timerBig.textContent = t;
+}, 1000);
+
+function expandBadge() {
+  document.getElementById('badge-pill').style.display = 'none';
+  document.getElementById('badge-expanded').style.display = 'block';
+}
+
+function collapseBadge() {
+  document.getElementById('badge-expanded').style.display = 'none';
+  document.getElementById('badge-pill').style.display = 'flex';
+}
+
+function floatHeart() {
+  var container = document.getElementById('heart-btn');
+  var rect = container.getBoundingClientRect();
+  var emojis = ['❤️','❤️','❤️','❤️','❤️'];
+  for (var k = 0; k < 3; k++) {
+    (function(i) {
+      setTimeout(function() {
+        var el = document.createElement('div');
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        el.style.cssText = 'position:fixed;z-index:99999;pointer-events:none;font-size:' + (16 + Math.random()*10) + 'px;'
+          + 'left:' + (rect.left + rect.width/2 + (Math.random()-0.5)*30) + 'px;'
+          + 'top:' + (rect.top) + 'px;'
+          + 'transition:transform 0.9s ease-out,opacity 0.9s ease-out;'
+          + 'opacity:1;transform:translateY(0px);';
+        document.body.appendChild(el);
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() {
+            el.style.transform = 'translateY(-70px)';
+            el.style.opacity = '0';
+          });
+        });
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 1000);
+      }, i * 120);
+    })(k);
+  }
+}
+</script>
 </body>
 </html>
